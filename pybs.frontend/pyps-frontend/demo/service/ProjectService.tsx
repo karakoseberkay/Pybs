@@ -2,13 +2,13 @@ import { Demo } from '../../types/types';
 
 export const ProjectService = {
 
-    getTeachers() {
+    getProjects() {
         return fetch('http://localhost:5284/api/project')
             .then((res) => res.json())
-            .then((d) => d as Demo.Teacher[]);
+            .then((d) => d as Demo.Project[]);
     },
 
-    deleteTeacher(id:any){
+    deleteProject(id:any){
         return fetch('http://localhost:5284/api/project/'+id, {
             method: 'DELETE'
           })
@@ -16,21 +16,21 @@ export const ProjectService = {
                 console.log(err.message);
              });
     },
-    updateTeacher(teacher:Demo.Teacher){
+    updateProject(project:Demo.Project){
 
-        return fetch('http://localhost:5284/api/project/'+teacher.id, {
+        return fetch('http://localhost:5284/api/project/'+project.projectId, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(teacher)
+            body: JSON.stringify(project)
           });
 
     },
-    postTeacher(teacher:Demo.Teacher) {
+    postProject(project:Demo.Project) {
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(teacher)
+            body: JSON.stringify(project)
         };
        return fetch('http://localhost:5284/api/project', requestOptions)
 

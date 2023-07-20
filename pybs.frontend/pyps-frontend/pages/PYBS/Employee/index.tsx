@@ -11,21 +11,20 @@ import { InputNumber } from 'primereact/inputnumber';
 import { debug } from 'console';
 
 const StudentsPage = () => {
-    const [teacherToPost, setTeacherToPost] = useState<Demo.Teacher>();    
+    const [EmployeeToPost, setEmployeeToPost] = useState<Demo.Employee>();    
     const [displayBasicPost, setDisplayPost] = useState(false);
-    const [Students, setStudents] = useState<Demo.Student[]>([]);
-    const [studentToUpdate, setStudentToUpdate] = useState<Demo.Student>();
-    const [displayBasic, setDisplayBasic] = useState(false);
+    const [Employies, setEmployies] = useState<Demo.Employee[]>([]);
+    const [EmployeeToUpdate, setEmployeeToUpdate] = useState<Demo.Employee>();
     const [displayBasicUpdate, setDisplayUpdate] = useState(false);
     const [filters1, setFilters1] = useState<DataTableFilterMeta>({});
     const [loading1, setLoading1] = useState(true);
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
-    const PostDialogFooter = <Button type="button" label="OK" onClick={() => postTeacher()} icon="pi pi-check" severity="secondary" />;
-    const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateStudent() } icon="pi pi-check" severity="secondary" />;
+    const PostDialogFooter = <Button type="button" label="OK" onClick={() => postEmployee()} icon="pi pi-check" severity="secondary" />;
+    const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateEmployee() } icon="pi pi-check" severity="secondary" />;
     const confirmationDialogFooter = (
         <>
             <Button type="button" label="Hayır" icon="pi pi-times" onClick={() => setDisplayConfirmation(false)} text />
-            <Button type="button" label="Evet" icon="pi pi-check" onClick={deleteStudent} text autoFocus />
+            <Button type="button" label="Evet" icon="pi pi-check" onClick={deleteEmployee} text autoFocus />
         </>
     );
 const [displayConfirmation, setDisplayConfirmation] = useState(false);
@@ -34,15 +33,15 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     };
 
 
-    function deleteStudent(id:any)
+    function deleteEmployee(id:any)
     {
-        EmployeeService.deleteStudent(id)
+        EmployeeService.deleteEmployee(id).then(RefreshData)
         console.log('Deleting...');
     }
 
-    function updateStudent()
+    function updateEmployee()
     {
-        EmployeeService.updateStudent(studentToUpdate!);
+        EmployeeService.updateEmployee(EmployeeToUpdate!);
         
         setDisplayUpdate(false);
     }
@@ -56,13 +55,13 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     };
     
     const deleteActionBodyTemplate = (row:any) => {
-        return <Button style={{margin :'1px'}} label="Sil" icon="pi pi-trash" severity="danger" onClick={() => deleteStudent(row.id) } />;
+        return <Button style={{margin :'1px'}} label="Sil" icon="pi pi-trash" severity="danger" onClick={() => deleteEmployee(row.employeeId) } />;
     }
 
 
-    function postTeacherValue(changeAction:any){
-        setTeacherToPost({
-            ...teacherToPost!, // Copy the old fields
+    function postEmployeeValue(changeAction:any){
+        setEmployeeToPost({
+            ...EmployeeToPost!, // Copy the old fields
             [changeAction.target.id] : changeAction.target.value
             
           });
@@ -70,46 +69,54 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     
       
     function handlePostClick(){
-        var teacherToPost : Demo.Teacher = {
-            id : 0,
-            name: "",
-            departmentId: 0
+        var EmployeeToPost : Demo.Employee = {
+            employeeId: 0,
+        employeeName: "",
+        departmentId: 0,
+        employeeIdNumber: 0,
+        employeeLevel:"",
+        employeeExp: 0,
+        offDay:"", 
+        projectId: 0
+             
         };
 
-         setTeacherToPost(teacherToPost);
+         setEmployeeToPost(EmployeeToPost);
          setDisplayPost(true);
     }
 
-    function postTeacher(){
+    function postEmployee(){
 
-        console.log(teacherToPost)
+        console.log(EmployeeToPost)
         
-        EmployeeService.postStudent(teacherToPost!).then(RefreshData);
+        EmployeeService.postEmployee(EmployeeToPost!).then(RefreshData);
         setDisplayPost(false); 
          
     
       }
 
 
-    function handleUpdateClick(student:Demo.Student){
+    function handleUpdateClick(Employee:Demo.Employee){
 
-        setStudentToUpdate(student);
+        setEmployeeToUpdate(Employee);
 
         setDisplayUpdate(true);
     }
 
-    function updateStudentValue(changeAction:any){
-        setStudentToUpdate({
-            ...studentToUpdate!, // Copy the old fields
+    function updateEmployeeValue(changeAction:any){
+        setEmployeeToUpdate({
+            ...EmployeeToUpdate!, // Copy the old fields
             [changeAction.target.id]: changeAction.target.value
           });
     }
 
-    const updateActionBodyTemplate = (studentRow:Demo.Student) => {
-        return <Button style={{margin :'1px'}} type="button" label="Güncelle" icon="pi pi-external-link" onClick={() => handleUpdateClick(studentRow)}/>  
+    const updateActionBodyTemplate = (EmployeeRow:Demo.Employee) => {
+        return <Button style={{margin :'1px'}} type="button" label="Güncelle" icon="pi pi-external-link" onClick={() => handleUpdateClick(EmployeeRow)}/>  
     }
    
-
+   const actionBodyTemplateOffDay =(EmployeeRow:Demo.Employee) =>{
+    return <Button style={{margin :'1px', background:'rgba(135 145 156)',border:'rgba(135 145 156)'}} type="button" label="Belge Ekle" icon="pi pi-external-link" onClick={() => handleUpdateClick(EmployeeRow)}/>  
+   }
 
 
     const renderHeader1 = () => {
@@ -123,7 +130,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                 
                
 
-                <Dialog header="Confirmation" visible={displayConfirmation} onHide={() => deleteStudent} style={{ width: '350px' }} modal footer={confirmationDialogFooter}>
+                <Dialog header="Confirmation" visible={displayConfirmation} onHide={() => deleteEmployee} style={{ width: '350px' }} modal footer={confirmationDialogFooter}>
                 <div className="flex align-items-center justify-content-center">
                 <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                 <span>Silmek istediğinize emin misiniz?</span>
@@ -133,25 +140,60 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
                 
                         
-                <Dialog header="Veri EKleme Sihirbazı" visible={displayBasicPost} style={{ width: '35vw' , height: '35vw'}} modal footer={PostDialogFooter} onHide={() => setDisplayBasic(false)}>
+                <Dialog header="Veri Ekleme Sihirbazı" visible={displayBasicPost} style={{ width: '30vw' , height: '31vw', padding:'0.5rem'}} modal footer={PostDialogFooter} onHide={() => setDisplayPost(false)}>
                           
                 
-                <div className="card">
-                              <h5>Student</h5>
-                                 <div className="formgroup-inline">
+                <div className="card" >
+                              
+                                 <div className="formgroup-inline"   style={{ paddingLeft:'1.5rem'}}  >
                                      <div className="field">
                                           <label htmlFor="name" className="p-sr-only">
-                                              studentName
+                                              EmployeeName
                                           </label>
-                                          <InputText id="name" value={teacherToPost?.name} onChange={(e) => { postTeacherValue(e); }} type="text" placeholder="Öğrencinin Adı" />
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Employee Name</h5>
+                                          <InputText id="employeeName" value={EmployeeToPost?.employeeName} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın Adı" />
                                       </div>
-                                     
+                                                                    
                                       <div className="field">
                                   <label htmlFor="departmentId" className="p-sr-only">
                                       departmentId
                                   </label>
-                                  <InputText id="departmentId" value={teacherToPost?.departmentId+''} onChange={(e) => { postTeacherValue(e); }} type="number" placeholder="Departman Id" />
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Department Id</h5>
+                                  <InputNumber id="departmentId" value={EmployeeToPost?.departmentId} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Departman Id" />
+                                
                               </div>
+
+                              <div className="field">
+                                          <label htmlFor="employeeLevel" className="p-sr-only">
+                                              EmployeeLevel
+                                          </label>
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Employee Level</h5>
+                                          <InputText id="employeeLevel" value={EmployeeToPost?.employeeLevel} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın mevkisi" />
+                                      </div>
+
+                                      <div className="field">
+                                          <label htmlFor="employeeExp" className="p-sr-only">
+                                              EmployeeExp
+                                          </label>
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Employee Exp</h5>
+                                          <InputNumber id="employeeExp" value={EmployeeToPost?.employeeExp} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın tecrübe yılı" />
+                                      </div>
+
+                                      <div className="field">
+                                          <label htmlFor="offDay" className="p-sr-only">
+                                          offDay
+                                          </label>
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Off Day</h5>
+                                          <InputText id="offDay" value={EmployeeToPost?.offDay} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın izin belgesi" />
+                                      </div>
+
+                                      <div className="field">
+                                          <label htmlFor="projectId" className="p-sr-only">
+                                          projectId
+                                          </label>
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Project Id</h5>
+                                          <InputNumber id="projectId" value={EmployeeToPost?.projectId} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın Adı" />
+                                      </div>
                               
                                  </div>
                           </div>
@@ -176,10 +218,10 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                    
                     <div className="formgroup-inline">
                         <div className="field">
-                            <label htmlFor="firstname1" className="p-sr-only">
-                                DepartmentId
+                            <label htmlFor="employeeId" className="p-sr-only">
+                            employeeId
                             </label>
-                            <InputText id="firstname1" type="text" placeholder="Departman Id" />
+                            <InputText id="employeeId" type="text" placeholder="employeeId" />
                         </div>
                        
                         
@@ -190,20 +232,20 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                
                 <Dialog header="Veri Güncelleme Sihirbazı" visible={displayBasicUpdate} style={{ width: '35vw' , height: '35vw'}} modal footer={UpdateDialogFooter} onHide={() => setDisplayUpdate(false)}>
                           <div className="card">
-                              <h5>Öğrenci</h5>
+                              <h5>Employee</h5>
                               <div className="formgroup-inline">
                                  
                                   <div className="field">
                                       <label htmlFor="name" className="p-sr-only">
                                           Firstname
                                       </label>
-                                      <InputText id="name" value={studentToUpdate?.name} onChange={(e) => { updateStudentValue(e); }} type="text" placeholder="Öğrenci Adı" />
+                                      <InputText id="name" value={EmployeeToUpdate?.employeeName} onChange={(e) => { updateEmployeeValue(e); }} type="text" placeholder="Öğrenci Adı" />
                                   </div>
                                   <div className="field">
                                       <label htmlFor="departmentId" className="p-sr-only">
                                           Department ID
                                       </label>
-                                      <InputText id="departmentId" value={studentToUpdate?.departmentId+''} onChange={(e) => { updateStudentValue(e); }}  type="text" placeholder="Departman ID" />
+                                      <InputText id="departmentId" value={EmployeeToUpdate?.departmentId+''} onChange={(e) => { updateEmployeeValue(e); }}  type="text" placeholder="Departman ID" />
                                   </div>
                               </div>
                           </div>
@@ -220,8 +262,8 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     
     function RefreshData() {
 
-        EmployeeService.getStudents().then((data) => {
-            setStudents(data);
+        EmployeeService.getEmployies().then((data) => {
+            setEmployies(data);
             setLoading1(false);
         });
     
@@ -249,9 +291,9 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Öğrenciler</h5>
+                    <h5>Employies</h5>
                     <DataTable
-                        value={Students}
+                        value={Employies}
                         paginator
                         className="p-datatable-gridlines"
                         showGridlines
@@ -264,9 +306,13 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                         emptyMessage="Dükkanda adam kalmadı."
                         header={header1}
                     >
-                        <Column field="id" header="Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="name" header="Öğrenci Adı" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman ID" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+            
+                        <Column field="employeeName" header="Employee Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="departmentId" header="Department" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="employeeLevel" header="Employee Level" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="employeeExp" header="Employee Exp" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="offDay" header="Off Day" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} body={actionBodyTemplateOffDay}/>
+                        <Column field="projectId" header="Project Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     </DataTable>

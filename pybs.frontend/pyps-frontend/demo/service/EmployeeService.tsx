@@ -2,13 +2,13 @@ import { Demo } from '../../types/types';
 
 export const EmployeeService = {
 
-    getStudents() {
+    getEmployies() {
         return fetch('http://localhost:5284/api/employee')
             .then((res) => res.json())
-            .then((d) => d as Demo.Student[]);
+            .then((d) => d as Demo.Employee[]);
     },
 
-    deleteStudent(id:any){
+    deleteEmployee(id:any){
         return fetch('http://localhost:5284/api/employee/'+id, {
             method: 'DELETE'
           })
@@ -17,22 +17,22 @@ export const EmployeeService = {
              });
     },
 
-    updateStudent(student:Demo.Student){
+    updateEmployee(employee:Demo.Employee){
 
-        return fetch('http://localhost:5284/api/employee/'+student.id, {
+        return fetch('http://localhost:5284/api/employee/'+employee.employeeId, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(student)
+            body: JSON.stringify(employee)
           });
 
     },
 
-    postStudent(student:Demo.Student) {
+    postEmployee(employee:Demo.Employee) {
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(student)
+            body: JSON.stringify(employee)
         };
        return fetch('http://localhost:5284/api/employee', requestOptions)
 

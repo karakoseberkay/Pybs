@@ -19,11 +19,11 @@ const AppMenu = () => {
         
         
         {
-            label: 'OKUL YÖNETİM SİSTEMİ (OYS)',
+            label: 'PYPS',
             items: [
-                { label: 'Departman Listeleme Merkezi', icon: 'pi pi-fw pi-table', to: '/PYBS/Department' },
-                { label: 'Öğrenci Listeleme Merkezi', icon: 'pi pi-fw pi-table', to: '/PYBS/Employee' },
-                { label: 'Öğretmen Listeleme Merkezi', icon: 'pi pi-fw pi-table', to: '/PYBS/Project' }
+                { label: 'Departments', icon: 'pi pi-fw pi-table', to: '/PYBS/Department' },
+                { label: 'Employies', icon: 'pi pi-fw pi-table', to: '/PYBS/Employee' },
+                { label: 'Projects', icon: 'pi pi-fw pi-table', to: '/PYBS/Project' }
                 
                
             ]

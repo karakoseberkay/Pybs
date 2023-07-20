@@ -200,16 +200,22 @@ declare namespace Demo {
         departmentName: string;
     }
 
-    type Student = {
-        id: number,
-        name: string,
-        departmentId: number
+    type Employee = {
+        employeeId: number,
+        employeeName: string,
+        departmentId: number,
+        employeeIdNumber: number,
+        employeeLevel: string,
+        employeeExp: number,
+        offDay: string,
+        projectId: number
     }
 
-    interface Teacher{
-        id: number,
-        name: string,
+    interface Project{
+        projectId: number,
+        projectName: string,
         departmentId: number;
+        projectDate: string
     }
 
 

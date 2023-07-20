@@ -9,25 +9,25 @@ import { InputText } from 'primereact/inputtext';
 import { Demo } from '../../../types/types';
 import { InputNumber } from 'primereact/inputnumber';
 
-const TeachersPage = () => {
-    const [teachers, setTeachers] = useState<Demo.Teacher[]>([]);
+const ProjectsPage = () => {
+    const [projects, setProjects] = useState<Demo.Project[]>([]);
     
-    const [ teacherIdToDelete, setTeacherIdToDelete] = useState<number>();
-    const [teacherToPost, setTeacherToPost] = useState<Demo.Teacher>();
+    const [ projectIdToDelete, setProjectIdToDelete] = useState<number>();
+    const [projectToPost, setProjectToPost] = useState<Demo.Project>();
     
     const [displayBasicPost, setDisplayPost] = useState(false);
-    const [teacherToUpdate, setTeacherToUpdate] = useState<Demo.Teacher>();
+    const [projectToUpdate, setProjectToUpdate] = useState<Demo.Project>();
     const [displayBasic, setDisplayBasic] = useState(false);
     const [displayBasicUpdate, setDisplayUpdate] = useState(false);
     const [filters1, setFilters1] = useState<DataTableFilterMeta>({});
     const [loading1, setLoading1] = useState(true);
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
-    const PostDialogFooter = <Button type="button" label="OK" onClick={() => postTeacher()} icon="pi pi-check" severity="secondary" />;
-    const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateTeacher() } icon="pi pi-check" severity="secondary" />;
+    const PostDialogFooter = <Button type="button" label="OK" onClick={() => postProject()} icon="pi pi-check" severity="secondary" />;
+    const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateProject() } icon="pi pi-check" severity="secondary" />;
     const confirmationDialogFooter = (
         <>
             <Button type="button" label="Hayır" icon="pi pi-times" onClick={() => setDisplayConfirmation(false)} text />
-            <Button type="button" label="Evet" icon="pi pi-check" onClick={deleteTeacher} text autoFocus />
+            <Button type="button" label="Evet" icon="pi pi-check" onClick={deleteProject} text autoFocus />
         </>
     );
 const [displayConfirmation, setDisplayConfirmation] = useState(false);
@@ -35,9 +35,9 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         initFilters1();
     };
 
-function updateTeacher()
+function updateProject()
     {
-        ProjectService.updateTeacher(teacherToUpdate!);
+        ProjectService.updateProject(projectToUpdate!);
         
         setDisplayUpdate(false);
     }
@@ -51,20 +51,20 @@ function updateTeacher()
         setGlobalFilterValue1(value);
     };
 
-    function postTeacher(){
+    function postProject(){
 
-        console.log(teacherToPost)
+        console.log(projectToPost)
         
-        ProjectService.postTeacher(teacherToPost!).then(RefreshData);
+        ProjectService.postProject(projectToPost!).then(RefreshData);
         setDisplayPost(false); 
          
     
       }
     
 
-    function handleDeleteClick(teacherToDelete:any){
+    function handleDeleteClick(projectToDelete:any){
 
-        setTeacherIdToDelete(teacherToDelete);
+        setProjectIdToDelete(projectToDelete);
         setDisplayConfirmation(true);
     }
 
@@ -72,22 +72,23 @@ function updateTeacher()
 
     
     function handlePostClick(){
-        var teacherToPost : Demo.Teacher = {
-            id : 0,
-            name: "",
-            departmentId: 0
+        var projectToPost : Demo.Project = {
+        projectId: 0,
+        projectName: "",
+        departmentId: 0,
+        projectDate: ""
         };
 
-         setTeacherToPost(teacherToPost);
+         setProjectToPost(projectToPost);
          setDisplayPost(true);
     }
 
     
 
 
-    function postTeacherValue(changeAction:any){
-        setTeacherToPost({
-            ...teacherToPost!, // Copy the old fields
+    function postProjectValue(changeAction:any){
+        setProjectToPost({
+            ...projectToPost!, // Copy the old fields
             [changeAction.target.id] : changeAction.target.value
             
           });
@@ -96,32 +97,32 @@ function updateTeacher()
    
 
     
-    function handleUpdateClick(teacher:Demo.Teacher){
+    function handleUpdateClick(project:Demo.Project){
 
-        setTeacherToUpdate(teacher);
+        setProjectToUpdate(project);
 
         setDisplayUpdate(true);
     }
 
-    function updateTeacherValue(changeAction:any){
-        setTeacherToUpdate({
-            ...teacherToUpdate!, // Copy the old fields
+    function updateProjectValue(changeAction:any){
+        setProjectToUpdate({
+            ...projectToUpdate!, // Copy the old fields
             [changeAction.target.id]: changeAction.target.value
           });
     }
 
-    const updateActionBodyTemplate = (teacherRow:Demo.Teacher) => {
-        return <Button style={{margin :'1px'}} type="button" label="Güncelle" icon="pi pi-external-link" onClick={() => handleUpdateClick(teacherRow)}/>  
+    const updateActionBodyTemplate = (projectRow:Demo.Project) => {
+        return <Button style={{margin :'1px'}} type="button" label="Güncelle" icon="pi pi-external-link" onClick={() => handleUpdateClick(projectRow)}/>  
     }
 
     
-    const deleteActionBodyTemplate = (row:Demo.Teacher) => {
-        return <Button style={{margin :'1px'}} label="Sil" icon="pi pi-trash" severity="danger" onClick={() => handleDeleteClick(row.id) } />;
+    const deleteActionBodyTemplate = (row:Demo.Project) => {
+        return <Button style={{margin :'1px'}} label="Sil" icon="pi pi-trash" severity="danger" onClick={() => handleDeleteClick(row.projectId) } />;
     }
 
-    function deleteTeacher()
+    function deleteProject()
     {
-        ProjectService.deleteTeacher(teacherIdToDelete);
+        ProjectService.deleteProject(projectIdToDelete).then(RefreshData);
         setDisplayConfirmation(false);
         
         
@@ -139,7 +140,7 @@ function updateTeacher()
             
            
 
-            <Dialog header="Confirmation" visible={displayConfirmation} onHide={() => deleteTeacher} style={{ width: '350px' }} modal footer={confirmationDialogFooter}>
+            <Dialog header="Confirmation" visible={displayConfirmation} onHide={() => deleteProject} style={{ width: '350px' }} modal footer={confirmationDialogFooter}>
             <div className="flex align-items-center justify-content-center">
             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
             <span>Silmek istediğinize emin misiniz?</span>
@@ -156,17 +157,17 @@ function updateTeacher()
                               <h5>Öğretmen</h5>
                                  <div className="formgroup-inline">
                                      <div className="field">
-                                          <label htmlFor="name" className="p-sr-only">
+                                          <label htmlFor="projectName" className="p-sr-only">
                                               ogretmenName
                                           </label>
-                                          <InputText id="name" value={teacherToPost?.name} onChange={(e) => { postTeacherValue(e); }} type="text" placeholder="Hocanın Adı" />
+                                          <InputText id="projectName" value={projectToPost?.projectName} onChange={(e) => { postProjectValue(e); }} type="text" placeholder="Hocanın Adı" />
                                       </div>
                                      
                                       <div className="field">
-                                  <label htmlFor="departmentId" className="p-sr-only">
+                                  <label htmlFor="projectId" className="p-sr-only">
                                       departmentId
                                   </label>
-                                  <InputText id="departmentId" value={teacherToPost?.departmentId+''} onChange={(e) => { postTeacherValue(e); }} type="number" placeholder="Departman Id" />
+                                  <InputText id="projectId" value={projectToPost?.projectId+''} onChange={(e) => { postProjectValue(e); }} type="number" placeholder="Departman Id" />
                               </div>
                               
                                  </div>
@@ -210,13 +211,13 @@ function updateTeacher()
                                   <label htmlFor="name" className="p-sr-only">
                                       Firstname
                                   </label>
-                                  <InputText id="name" value={teacherToUpdate?.name} onChange={(e) => { updateTeacherValue(e); }} type="text" placeholder="Öğrenci Adı" />
+                                  <InputText id="name" value={projectToUpdate?.projectName} onChange={(e) => { updateProjectValue(e); }} type="text" placeholder="Öğrenci Adı" />
                               </div>
                               <div className="field">
                                   <label htmlFor="departmentId" className="p-sr-only">
                                       Department ID
                                   </label>
-                                  <InputText id="departmentId" value={teacherToUpdate?.departmentId+''} onChange={(e) => { updateTeacherValue(e); }}  type="text" placeholder="Departman ID" />
+                                  <InputText id="departmentId" value={projectToUpdate?.departmentId+''} onChange={(e) => { updateProjectValue(e); }}  type="text" placeholder="Departman ID" />
                               </div>
                           </div>
                       </div>
@@ -234,8 +235,8 @@ function updateTeacher()
     };
     function RefreshData() {
 
-        ProjectService.getTeachers().then((data) => {
-            setTeachers(data);
+        ProjectService.getProjects().then((data) => {
+            setProjects(data);
             setLoading1(false);
         });
     
@@ -265,7 +266,7 @@ function updateTeacher()
                 <div className="card">
                     <h5>Öğrenciler</h5>
                     <DataTable
-                        value={teachers}
+                        value={projects}
                         paginator
                         className="p-datatable-gridlines"
                         showGridlines
@@ -278,8 +279,8 @@ function updateTeacher()
                         emptyMessage="No customers found."
                         header={header1}
                     >
-                        <Column field="id" header="Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="name" header="Öğrenci Adı" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="projectId" header="Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="projectName" header="Öğrenci Adı" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="departmentId" header="Departman ID" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
 
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
@@ -297,5 +298,5 @@ function updateTeacher()
 
 
 
-export default TeachersPage;
+export default ProjectsPage;
 
