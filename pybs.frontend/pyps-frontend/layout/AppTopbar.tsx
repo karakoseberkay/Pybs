@@ -21,8 +21,8 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     return (
         <div className="layout-topbar">
             <Link href="/" className="layout-topbar-logo">
-                <img src={`https://www.cankayaelektronik.com/image/genel/big/urun6a.jpg`} width="55px" height={'45px'} alt="logo" />
-                <span>Ali Cabbar Üniversitesi</span>
+                
+                <span>Personel Yönetim Bilişim Sistemi</span>
             </Link>
 
             <button ref={menubuttonRef} type="button" className="p-link layout-menu-button layout-topbar-button" onClick={onMenuToggle}>

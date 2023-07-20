@@ -204,7 +204,7 @@ declare namespace Demo {
         employeeId: number,
         employeeName: string,
         departmentId: number,
-        employeeIdNumber: number,
+        employeeIdNumber: string,
         employeeLevel: string,
         employeeExp: number,
         offDay: string,

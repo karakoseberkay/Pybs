@@ -7,11 +7,11 @@ import { EmployeeService } from '../../../demo/service/EmployeeService';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Demo } from '../../../types/types';
-import { InputNumber } from 'primereact/inputnumber';
-import { debug } from 'console';
+import { Dropdown } from 'primereact/dropdown';
 
 const StudentsPage = () => {
     const [EmployeeToPost, setEmployeeToPost] = useState<Demo.Employee>();    
+    const [DepartmentId, setDepartmentId] = useState<Demo.Department>();
     const [displayBasicPost, setDisplayPost] = useState(false);
     const [Employies, setEmployies] = useState<Demo.Employee[]>([]);
     const [EmployeeToUpdate, setEmployeeToUpdate] = useState<Demo.Employee>();
@@ -72,8 +72,8 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         var EmployeeToPost : Demo.Employee = {
             employeeId: 0,
         employeeName: "",
-        departmentId: 0,
-        employeeIdNumber: 0,
+        employeeIdNumber: "",
+        departmentId: 0,     
         employeeLevel:"",
         employeeExp: 0,
         offDay:"", 
@@ -159,7 +159,15 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                       departmentId
                                   </label>
                                   <h5 style={{display:'-ms-inline-flexbox'}}>Department Id</h5>
-                                  <InputNumber id="departmentId" value={EmployeeToPost?.departmentId} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Departman Id" />
+                                  <Dropdown value={DepartmentId} onChange={(e) => setDepartmentId(e.value)}  optionLabel="name" placeholder="Select a City" className="w-full md:w-14rem" />
+                              </div>
+                              
+                              <div className="field">
+                                  <label htmlFor="employeeIdNumber" className="p-sr-only">
+                                      employeeIdNumber
+                                  </label>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Çalışan TC no</h5>
+                                  <InputText id="employeeIdNumber" value={EmployeeToPost?.employeeIdNumber} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışan TC no" />
                                 
                               </div>
 
@@ -176,23 +184,17 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                               EmployeeExp
                                           </label>
                                           <h5 style={{display:'-ms-inline-flexbox'}}>Employee Exp</h5>
-                                          <InputNumber id="employeeExp" value={EmployeeToPost?.employeeExp} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın tecrübe yılı" />
+                                          <InputText id="employeeExp" value={EmployeeToPost?.employeeExp+''} onChange={(e) => { postEmployeeValue(e); }} type="number" placeholder="Çalışanın tecrübe yılı" />
                                       </div>
 
-                                      <div className="field">
-                                          <label htmlFor="offDay" className="p-sr-only">
-                                          offDay
-                                          </label>
-                                          <h5 style={{display:'-ms-inline-flexbox'}}>Off Day</h5>
-                                          <InputText id="offDay" value={EmployeeToPost?.offDay} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın izin belgesi" />
-                                      </div>
+                                     
 
                                       <div className="field">
                                           <label htmlFor="projectId" className="p-sr-only">
                                           projectId
                                           </label>
                                           <h5 style={{display:'-ms-inline-flexbox'}}>Project Id</h5>
-                                          <InputNumber id="projectId" value={EmployeeToPost?.projectId} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın Adı" />
+                                          <InputText id="projectId" value={EmployeeToPost?.projectId+''} onChange={(e) => { postEmployeeValue(e); }} type="number" placeholder="Çalışanın Adı" />
                                       </div>
                               
                                  </div>
@@ -309,6 +311,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
             
                         <Column field="employeeName" header="Employee Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="departmentId" header="Department" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="employeeIdNumber" header="Çalışan TC no" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="employeeLevel" header="Employee Level" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="employeeExp" header="Employee Exp" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="offDay" header="Off Day" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} body={actionBodyTemplateOffDay}/>

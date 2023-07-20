@@ -8,9 +8,9 @@ const AppFooter = () => {
 
     return (
         <div className="layout-footer">
-            <img src={`https://www.cankayaelektronik.com/image/genel/big/urun6a.jpg`} alt="Logo" height="55" className="mr-2" />
+            
             by
-            <span className="font-medium ml-2">GIRNATA</span>
+            <span className="font-medium ml-2">BerkayFurkan</span>
         </div>
     );
 };

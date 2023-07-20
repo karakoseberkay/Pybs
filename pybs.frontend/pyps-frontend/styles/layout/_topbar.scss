@@ -19,7 +19,7 @@
         color: var(--surface-900);
         font-size: 1.5rem;
         font-weight: 500;
-        width: 300px;
+        
         color: whitesmoke;
         border-radius: 12px;
 
@@ -144,6 +144,7 @@
                 }
 
                 span {
+                    width: 400px;
                     font-weight: medium;
                     display: block;
                 }

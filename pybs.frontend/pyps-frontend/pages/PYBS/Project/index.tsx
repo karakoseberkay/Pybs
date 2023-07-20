@@ -154,20 +154,20 @@ function updateProject()
                           
                 
                           <div className="card">
-                              <h5>Öğretmen</h5>
+                              <h5>Proje</h5>
                                  <div className="formgroup-inline">
                                      <div className="field">
                                           <label htmlFor="projectName" className="p-sr-only">
-                                              ogretmenName
+                                              projectName
                                           </label>
-                                          <InputText id="projectName" value={projectToPost?.projectName} onChange={(e) => { postProjectValue(e); }} type="text" placeholder="Hocanın Adı" />
+                                          <InputText id="projectName" value={projectToPost?.projectName} onChange={(e) => { postProjectValue(e); }} type="text" placeholder="Proje Adı" />
                                       </div>
                                      
                                       <div className="field">
-                                  <label htmlFor="projectId" className="p-sr-only">
+                                  <label htmlFor="departmentId" className="p-sr-only">
                                       departmentId
                                   </label>
-                                  <InputText id="projectId" value={projectToPost?.projectId+''} onChange={(e) => { postProjectValue(e); }} type="number" placeholder="Departman Id" />
+                                  <InputText id="departmentId" value={projectToPost?.departmentId+''} onChange={(e) => { postProjectValue(e); }} type="number" placeholder="Departman Id" />
                               </div>
                               
                                  </div>
@@ -264,7 +264,7 @@ function updateProject()
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Öğrenciler</h5>
+                    <h5>PROJELER</h5>
                     <DataTable
                         value={projects}
                         paginator
@@ -279,8 +279,8 @@ function updateProject()
                         emptyMessage="No customers found."
                         header={header1}
                     >
-                        <Column field="projectId" header="Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="projectName" header="Öğrenci Adı" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        
+                        <Column field="projectName" header="Proje Adı" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="departmentId" header="Departman ID" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
 
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
