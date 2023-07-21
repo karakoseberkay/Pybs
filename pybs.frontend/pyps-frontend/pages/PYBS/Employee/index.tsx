@@ -4,10 +4,11 @@ import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { EmployeeService } from '../../../demo/service/EmployeeService';
+import { DepartmentService } from '../../../demo/service/DepartmentService';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Demo } from '../../../types/types';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 
 const StudentsPage = () => {
     const [EmployeeToPost, setEmployeeToPost] = useState<Demo.Employee>();    
@@ -19,18 +20,35 @@ const StudentsPage = () => {
     const [filters1, setFilters1] = useState<DataTableFilterMeta>({});
     const [loading1, setLoading1] = useState(true);
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
-    const PostDialogFooter = <Button type="button" label="OK" onClick={() => postEmployee()} icon="pi pi-check" severity="secondary" />;
-    const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateEmployee() } icon="pi pi-check" severity="secondary" />;
+    const [postButtonLabel, setPostButtonLabel] = useState('Yeni personel ekle');
+    const [departments, setDepartments] = useState<Demo.Department[]>([]);
+  
+   
+    const PostDialogFooter = (
+        <Button type="button" label={postButtonLabel} onClick={() => postEmployee()} icon="pi pi-check" severity="secondary" />
+    ); const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateEmployee() } icon="pi pi-check" severity="secondary" />;
     const confirmationDialogFooter = (
         <>
             <Button type="button" label="Hayır" icon="pi pi-times" onClick={() => setDisplayConfirmation(false)} text />
             <Button type="button" label="Evet" icon="pi pi-check" onClick={deleteEmployee} text autoFocus />
         </>
     );
+    
+    const [isTCKNValid, setIsTCKNValid] = useState(true);
+
 const [displayConfirmation, setDisplayConfirmation] = useState(false);
     const clearFilter1 = () => {
         initFilters1();
     };
+
+
+    const employeeLevels = [
+        { label: 'Stajyer', value: 'Stajyer' },
+        { label: 'Çalışan', value: 'Çalışan' },
+        { label: 'Yönetici', value: 'Yönetici' },
+        // Diğer seviyeleri buraya ekleyebilirsiniz
+      ];
+    
 
 
     function deleteEmployee(id:any)
@@ -58,22 +76,93 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         return <Button style={{margin :'1px'}} label="Sil" icon="pi pi-trash" severity="danger" onClick={() => deleteEmployee(row.employeeId) } />;
     }
 
+    const employeeOptions = departments.map((emp) => ({
+        label: emp.departmentName,
+        value: emp.departmentId,
+      }));
 
+
+    function checkTCKNValidity(tckn: string): boolean {
+        // Türkiye Cumhuriyeti kimlik numarası 11 haneli olmalıdır
+        if (tckn.length !== 11) {
+          return false;
+        }
+      
+        // Kimlik numarası sadece rakamlardan oluşmalıdır
+        if (!/^\d+$/.test(tckn)) {
+          return false;
+        }
+      
+        // İlk hane 0 olmamalıdır
+        if (tckn[0] === '0') {
+          return false;
+        }
+      
+        // Kimlik numarasının son hanesi, diğer 10 hanenin doğru toplamının mod 10'u olmalıdır
+        let total = 0;
+        for (let i = 0; i < 10; i++) {
+          total += parseInt(tckn[i], 10);
+        }
+        if (total % 10 !== parseInt(tckn[10], 10)) {
+          return false;
+        }
+      /*
+        // İlk 9 hane için ikişer ikişer toplamı, 10. haneyi vermelidir
+        const isSumEqual = (a: number, b: number, c: number) => a + b === c;
+        if (
+          !isSumEqual(parseInt(tckn[0], 10), parseInt(tckn[2], 10), parseInt(tckn[4], 10)) ||
+          !isSumEqual(parseInt(tckn[1], 10), parseInt(tckn[3], 10), parseInt(tckn[5], 10)) ||
+          !isSumEqual(parseInt(tckn[6], 10), parseInt(tckn[8], 10), parseInt(tckn[10], 10))
+        ) {
+          return false;
+        }
+      
+        // İlk 10 hane için ikişer ikişer toplamın 7 katı, 9. haneyi vermelidir
+        const isTotalEqual = (a: number, b: number, c: number, d: number) => (a + b + c) * d === parseInt(tckn[9], 10);
+        if (
+          !isTotalEqual(parseInt(tckn[0], 10), parseInt(tckn[2], 10), parseInt(tckn[4], 10), 7) ||
+          !isTotalEqual(parseInt(tckn[1], 10), parseInt(tckn[3], 10), parseInt(tckn[5], 10), 7) ||
+          !isTotalEqual(parseInt(tckn[6], 10), parseInt(tckn[8], 10), parseInt(tckn[10], 10), 7)
+        ) {
+          return false;
+        }*/
+      
+        return true;
+      }
+    
+      function validateTCKN(tckn: string) {
+        const isValid = checkTCKNValidity(tckn);
+        setIsTCKNValid(isValid);
+    }
+    
     function postEmployeeValue(changeAction:any){
-        setEmployeeToPost({
+        if (changeAction.target.id === "employeeIdNumber") {
+            validateTCKN(changeAction.target.value);
+        }
+
+
+          
+          setEmployeeToPost({
             ...EmployeeToPost!, // Copy the old fields
-            [changeAction.target.id] : changeAction.target.value
+        
+            [changeAction.target.id] : changeAction.target.value,
+
             
+                     
+                       
           });
     }
     
       
     function handlePostClick(){
+
+       
+
         var EmployeeToPost : Demo.Employee = {
             employeeId: 0,
         employeeName: "",
         employeeIdNumber: "",
-        departmentId: 0,     
+        departmentId: 0,    
         employeeLevel:"",
         employeeExp: 0,
         offDay:"", 
@@ -81,13 +170,21 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
              
         };
 
-         setEmployeeToPost(EmployeeToPost);
-         setDisplayPost(true);
+        setEmployeeToPost(EmployeeToPost);
+        setPostButtonLabel('Yeni personel ekle');
+        setDisplayPost(true);
     }
 
     function postEmployee(){
+        const isValidTCKN = checkTCKNValidity(EmployeeToPost?.employeeIdNumber || '');
 
-        console.log(EmployeeToPost)
+        if (!isValidTCKN) {
+            // If TC no is invalid, set the button text to "Hatalı TC No"
+            setPostButtonLabel('Hatalı TC No');
+            return;
+        }
+       
+
         
         EmployeeService.postEmployee(EmployeeToPost!).then(RefreshData);
         setDisplayPost(false); 
@@ -118,8 +215,14 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     return <Button style={{margin :'1px', background:'rgba(135 145 156)',border:'rgba(135 145 156)'}} type="button" label="Belge Ekle" icon="pi pi-external-link" onClick={() => handleUpdateClick(EmployeeRow)}/>  
    }
 
+   function setSelectedDepartmentForPost(e: DropdownChangeEvent): void {
+    throw new Error('Function not implemented.');
+}
+   
+
 
     const renderHeader1 = () => {
+
         return (
             <div className="flex justify-content-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Filtreyi temizle" outlined onClick={clearFilter1} />
@@ -156,11 +259,11 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                                                     
                                       <div className="field">
                                   <label htmlFor="departmentId" className="p-sr-only">
-                                      departmentId
+                                  departmentId
                                   </label>
                                   <h5 style={{display:'-ms-inline-flexbox'}}>Department Id</h5>
-                                  <Dropdown value={DepartmentId} onChange={(e) => setDepartmentId(e.value)}  optionLabel="name" placeholder="Select a City" className="w-full md:w-14rem" />
-                              </div>
+                                    <Dropdown id="departmentId" value={EmployeeToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Çalışan seçin" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
+                                   </div>
                               
                               <div className="field">
                                   <label htmlFor="employeeIdNumber" className="p-sr-only">
@@ -176,8 +279,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                               EmployeeLevel
                                           </label>
                                           <h5 style={{display:'-ms-inline-flexbox'}}>Employee Level</h5>
-                                          <InputText id="employeeLevel" value={EmployeeToPost?.employeeLevel} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın mevkisi" />
-                                      </div>
+                                          <Dropdown id="employeeLevel" value={EmployeeToPost?.employeeLevel} options={employeeLevels} placeholder="Employee Level Seçin" onChange={(e) => postEmployeeValue(e)} /> </div>
 
                                       <div className="field">
                                           <label htmlFor="employeeExp" className="p-sr-only">
@@ -245,9 +347,9 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                   </div>
                                   <div className="field">
                                       <label htmlFor="departmentId" className="p-sr-only">
-                                          Department ID
+                                          Department Name
                                       </label>
-                                      <InputText id="departmentId" value={EmployeeToUpdate?.departmentId+''} onChange={(e) => { updateEmployeeValue(e); }}  type="text" placeholder="Departman ID" />
+                                      <InputText id="departmentId" value={EmployeeToUpdate?.departmentId + ''} onChange={(e) => { updateEmployeeValue(e); }}  type="text" placeholder="Departman Name" />
                                   </div>
                               </div>
                           </div>
@@ -268,6 +370,16 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
             setEmployies(data);
             setLoading1(false);
         });
+
+        DepartmentService.getDepartments()
+        .then((data) => {
+          setDepartments(data);
+          setLoading1(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching employees:', error);
+        });
+
     
         initFilters1();
     }
@@ -287,9 +399,14 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         setGlobalFilterValue1('');
     };
 
+    
+
     const header1 = renderHeader1();
 
     return (
+
+        
+        
         <div className="grid">
             <div className="col-12">
                 <div className="card">
@@ -310,7 +427,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                     >
             
                         <Column field="employeeName" header="Employee Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Department" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="departmentId" header="Department Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="employeeIdNumber" header="Çalışan TC no" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="employeeLevel" header="Employee Level" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
                         <Column field="employeeExp" header="Employee Exp" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
@@ -328,6 +445,10 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
    
    
    );
+
+   
+
+
 
 
 
