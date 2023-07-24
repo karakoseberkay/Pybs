@@ -21,9 +21,10 @@ const AppMenu = () => {
         {
             label: 'PYPS',
             items: [
-                { label: 'Departments', icon: 'pi pi-fw pi-table', to: '/PYBS/Department' },
-                { label: 'Employies', icon: 'pi pi-fw pi-table', to: '/PYBS/Employee' },
-                { label: 'Projects', icon: 'pi pi-fw pi-table', to: '/PYBS/Project' }
+                { label: 'Departman Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/Department' },
+                
+                { label: 'Proje Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/Project' },
+                { label: 'Çalışan Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/Employee' }
                 
                
             ]

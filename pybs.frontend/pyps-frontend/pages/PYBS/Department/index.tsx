@@ -137,7 +137,7 @@ function updateDepartment()
     const renderHeader1 = () => {
         return (
             <div className="flex justify-content-between">
-                <Button type="button" icon="pi pi-filter-slash" label="Filtreyi temizle" outlined onClick={clearFilter1} />
+               
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Departman ara" />
@@ -149,7 +149,7 @@ function updateDepartment()
                           
                 
                   <div className="card">
-                      <h5>Department</h5>
+                      <h5>Departman</h5>
                          <div className="formgroup-inline">
                              <div className="field">
                                   <label htmlFor="name" className="p-sr-only">
@@ -267,8 +267,8 @@ function updateDepartment()
                         
                     >
                         
-                        <Column field="departmentId" header="Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="departmentName" header="Departman Adı" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="departmentId" header="Id"  style={{ minWidth: '12rem' }} />
+                        <Column field="departmentName" header="Departman Adı"  style={{ minWidth: '12rem' }} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     

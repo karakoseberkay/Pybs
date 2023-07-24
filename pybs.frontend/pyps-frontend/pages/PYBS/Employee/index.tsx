@@ -9,6 +9,8 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Demo } from '../../../types/types';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+import { ProjectService } from '../../../demo/service/ProjectService';
+import { error } from 'console';
 
 const StudentsPage = () => {
     const [EmployeeToPost, setEmployeeToPost] = useState<Demo.Employee>();    
@@ -22,11 +24,14 @@ const StudentsPage = () => {
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
     const [postButtonLabel, setPostButtonLabel] = useState('Yeni personel ekle');
     const [departments, setDepartments] = useState<Demo.Department[]>([]);
+    const [projects, setProjects] = useState<Demo.Project[]>([]);
   
    
     const PostDialogFooter = (
         <Button type="button" label={postButtonLabel} onClick={() => postEmployee()} icon="pi pi-check" severity="secondary" />
-    ); const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateEmployee() } icon="pi pi-check" severity="secondary" />;
+    );
+    
+    const UpdateDialogFooter = <Button type="button" label="OK" onClick={() => updateEmployee() } icon="pi pi-check" severity="secondary" />;
     const confirmationDialogFooter = (
         <>
             <Button type="button" label="Hayır" icon="pi pi-times" onClick={() => setDisplayConfirmation(false)} text />
@@ -47,6 +52,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         { label: 'Çalışan', value: 'Çalışan' },
         { label: 'Yönetici', value: 'Yönetici' },
         // Diğer seviyeleri buraya ekleyebilirsiniz
+
       ];
     
 
@@ -59,7 +65,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
     function updateEmployee()
     {
-        EmployeeService.updateEmployee(EmployeeToUpdate!);
+        EmployeeService.updateEmployee(EmployeeToUpdate!).then(RefreshData);
         
         setDisplayUpdate(false);
     }
@@ -79,6 +85,12 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     const employeeOptions = departments.map((emp) => ({
         label: emp.departmentName,
         value: emp.departmentId,
+      }));
+
+    
+      const projectOptions = projects.map((emp) => ({
+        label: emp.projectName,
+        value: emp.projectId,
       }));
 
 
@@ -225,8 +237,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
         return (
             <div className="flex justify-content-between">
-                <Button type="button" icon="pi pi-filter-slash" label="Filtreyi temizle" outlined onClick={clearFilter1} />
-                <span className="p-input-icon-left">
+                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Departman ara" />
                 </span>
@@ -253,7 +264,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                           <label htmlFor="name" className="p-sr-only">
                                               EmployeeName
                                           </label>
-                                          <h5 style={{display:'-ms-inline-flexbox'}}>Employee Name</h5>
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Çalışan Adı</h5>
                                           <InputText id="employeeName" value={EmployeeToPost?.employeeName} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın Adı" />
                                       </div>
                                                                     
@@ -261,8 +272,8 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                   <label htmlFor="departmentId" className="p-sr-only">
                                   departmentId
                                   </label>
-                                  <h5 style={{display:'-ms-inline-flexbox'}}>Department Id</h5>
-                                    <Dropdown id="departmentId" value={EmployeeToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Çalışan seçin" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
+                                    <Dropdown id="departmentId" value={EmployeeToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
                                    </div>
                               
                               <div className="field">
@@ -278,26 +289,26 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                           <label htmlFor="employeeLevel" className="p-sr-only">
                                               EmployeeLevel
                                           </label>
-                                          <h5 style={{display:'-ms-inline-flexbox'}}>Employee Level</h5>
-                                          <Dropdown id="employeeLevel" value={EmployeeToPost?.employeeLevel} options={employeeLevels} placeholder="Employee Level Seçin" onChange={(e) => postEmployeeValue(e)} /> </div>
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Çalışan Kıdemi</h5>
+                                          <Dropdown id="employeeLevel" value={EmployeeToPost?.employeeLevel} options={employeeLevels} placeholder="Çalışan Kıdemi Seçin" onChange={(e) => postEmployeeValue(e)} /> </div>
 
                                       <div className="field">
                                           <label htmlFor="employeeExp" className="p-sr-only">
                                               EmployeeExp
                                           </label>
-                                          <h5 style={{display:'-ms-inline-flexbox'}}>Employee Exp</h5>
-                                          <InputText id="employeeExp" value={EmployeeToPost?.employeeExp+''} onChange={(e) => { postEmployeeValue(e); }} type="number" placeholder="Çalışanın tecrübe yılı" />
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Tecrübe(Yıl)</h5>
+                                          <InputText id="employeeExp" value={EmployeeToPost?.employeeExp+''} onChange={(e) => { postEmployeeValue(e); }} type="number" placeholder="Çalışanın Tecrübe yılı" />
                                       </div>
 
                                      
 
                                       <div className="field">
-                                          <label htmlFor="projectId" className="p-sr-only">
-                                          projectId
-                                          </label>
-                                          <h5 style={{display:'-ms-inline-flexbox'}}>Project Id</h5>
-                                          <InputText id="projectId" value={EmployeeToPost?.projectId+''} onChange={(e) => { postEmployeeValue(e); }} type="number" placeholder="Çalışanın Adı" />
-                                      </div>
+                                  <label htmlFor="projectId" className="p-sr-only">
+                                  projectId
+                                  </label>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
+                                    <Dropdown id="projectId" value={EmployeeToPost?.projectId} options={projectOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
+                                   </div>
                               
                                  </div>
                           </div>
@@ -334,23 +345,46 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                 </div>
                 </Dialog>
                
-                <Dialog header="Veri Güncelleme Sihirbazı" visible={displayBasicUpdate} style={{ width: '35vw' , height: '35vw'}} modal footer={UpdateDialogFooter} onHide={() => setDisplayUpdate(false)}>
+                <Dialog header="Veri Güncelleme Sihirbazı" visible={displayBasicUpdate} style={{ width: '17vw' , height: '35vw'}} modal footer={UpdateDialogFooter} onHide={() => setDisplayUpdate(false)}>
                           <div className="card">
-                              <h5>Employee</h5>
+                              <h5>Çalışan İsmi</h5>
                               <div className="formgroup-inline">
                                  
                                   <div className="field">
-                                      <label htmlFor="name" className="p-sr-only">
-                                          Firstname
+                                      <label htmlFor="employeeName" className="p-sr-only">
+                                      İsim
                                       </label>
-                                      <InputText id="name" value={EmployeeToUpdate?.employeeName} onChange={(e) => { updateEmployeeValue(e); }} type="text" placeholder="Öğrenci Adı" />
-                                  </div>
-                                  <div className="field">
-                                      <label htmlFor="departmentId" className="p-sr-only">
-                                          Department Name
-                                      </label>
-                                      <InputText id="departmentId" value={EmployeeToUpdate?.departmentId + ''} onChange={(e) => { updateEmployeeValue(e); }}  type="text" placeholder="Departman Name" />
-                                  </div>
+                                      <InputText id="employeeName" value={EmployeeToUpdate?.employeeName} onChange={(e) => { updateEmployeeValue(e); }} type="text" placeholder="Çalışan İsmi" />
+                                 
+                                      </div>
+                                      <div className="field">
+                                  <label htmlFor="departmentId" className="p-sr-only">
+                                  Departman Adı
+                                  </label>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
+                                    <Dropdown id="departmentId" value={EmployeeToUpdate?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
+                                   </div>
+
+                                   
+                                   <div className="field">
+                                  <label htmlFor="projectId" className="p-sr-only">
+                                  Proje Kodu
+                                  </label>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Proje Kodu</h5>
+                                    <Dropdown id="projectId" value={EmployeeToUpdate?.projectId} options={projectOptions} optionLabel="label" placeholder="Proje seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
+                                   </div>
+
+
+                                   <div className="field">
+                                          <label htmlFor="employeeLevel" className="p-sr-only">
+                                              EmployeeLevel
+                                          </label>
+                                          <h5 style={{display:'-ms-inline-flexbox'}}>Çalışan Tecrübe(Yıl)</h5>
+                                          <Dropdown id="employeeLevel" value={EmployeeToUpdate?.employeeLevel} options={employeeLevels} placeholder="Employee Level Seçin" onChange={(e) => updateEmployeeValue(e)} /> </div>
+
+                                    
+                                 
+                                
                               </div>
                           </div>
                 </Dialog>
@@ -377,7 +411,22 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
           setLoading1(false);
         })
         .catch((error) => {
-          console.error('Error fetching employees:', error);
+          console.error('Error fetching departments:', error);
+        });
+
+        ProjectService.getProjects()
+        .then((data) => {
+
+            setProjects(data);
+            setLoading1(false);
+
+        })
+        .catch((error) => {
+
+
+            console.error('Error ferching projects:', error)
+
+
         });
 
     
@@ -410,7 +459,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Employies</h5>
+                    <h5>Çalışan Tablosu</h5>
                     <DataTable
                         value={Employies}
                         paginator
@@ -426,13 +475,13 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                         header={header1}
                     >
             
-                        <Column field="employeeName" header="Employee Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Department Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="employeeIdNumber" header="Çalışan TC no" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="employeeLevel" header="Employee Level" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="employeeExp" header="Employee Exp" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="offDay" header="Off Day" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} body={actionBodyTemplateOffDay}/>
-                        <Column field="projectId" header="Project Id" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column field="employeeName" header="Çalışan İsmi"  style={{ minWidth: '12rem' }} />
+                        <Column field="departmentId" header="Departman Adı"  style={{ minWidth: '12rem' }} />
+                        <Column field="employeeIdNumber" header="Çalışan TC no"  style={{ minWidth: '12rem' }} />
+                        <Column field="employeeLevel" header="Çalışan Kıdem"  style={{ minWidth: '12rem' }} />
+                        <Column field="employeeExp" header="Tecrübe(Yıl)"  style={{ minWidth: '12rem' }} />
+                        <Column field="offDay" header="İzin Durumu"  style={{ minWidth: '12rem' }} body={actionBodyTemplateOffDay}/>
+                        <Column field="projectId" header="Proje Kodu"  style={{ minWidth: '12rem' }} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     </DataTable>

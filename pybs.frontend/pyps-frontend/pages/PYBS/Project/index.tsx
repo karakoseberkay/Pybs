@@ -7,14 +7,15 @@ import { ProjectService } from '../../../demo/service/ProjectService';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Demo } from '../../../types/types';
-import { InputNumber } from 'primereact/inputnumber';
+import { DepartmentService } from '../../../demo/service/DepartmentService';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 
 const ProjectsPage = () => {
     const [projects, setProjects] = useState<Demo.Project[]>([]);
     
     const [ projectIdToDelete, setProjectIdToDelete] = useState<number>();
     const [projectToPost, setProjectToPost] = useState<Demo.Project>();
-    
+    const [departments, setDepartments] = useState<Demo.Department[]>([]);
     const [displayBasicPost, setDisplayPost] = useState(false);
     const [projectToUpdate, setProjectToUpdate] = useState<Demo.Project>();
     const [displayBasic, setDisplayBasic] = useState(false);
@@ -34,6 +35,13 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     const clearFilter1 = () => {
         initFilters1();
     };
+
+
+    const employeeOptions = departments.map((emp) => ({
+        label: emp.departmentName,
+        value: emp.departmentId,
+      }));
+
 
 function updateProject()
     {
@@ -132,7 +140,7 @@ function updateProject()
     const renderHeader1 = () => {
         return (
             <div className="flex justify-content-between">
-            <Button type="button" icon="pi pi-filter-slash" label="Filtreyi temizle" outlined onClick={clearFilter1} />
+            
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Departman ara" />
@@ -150,7 +158,7 @@ function updateProject()
 
             
                         
-            <Dialog header="Veri EKleme Sihirbazı" visible={displayBasicPost} style={{ width: '35vw' , height: '35vw'}} modal footer={PostDialogFooter} onHide={() => setDisplayPost(false)}>
+            <Dialog header="Veri EKleme Sihirbazı" visible={displayBasicPost} style={{ width: '17vw' , height: '25vw'}} modal footer={PostDialogFooter} onHide={() => setDisplayPost(false)}>
                           
                 
                           <div className="card">
@@ -163,14 +171,15 @@ function updateProject()
                                           <InputText id="projectName" value={projectToPost?.projectName} onChange={(e) => { postProjectValue(e); }} type="text" placeholder="Proje Adı" />
                                       </div>
                                      
-                                      <div className="field">
-                                  <label htmlFor="departmentId" className="p-sr-only">
-                                      departmentId
-                                  </label>
-                                  <InputText id="departmentId" value={projectToPost?.departmentId+''} onChange={(e) => { postProjectValue(e); }} type="number" placeholder="Departman Id" />
-                              </div>
                               
                                  </div>
+                                 <div className="field">
+                                  <label htmlFor="departmentId" className="p-sr-only">
+                                  departmentId
+                                  </label>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Department Id</h5>
+                                    <Dropdown id="departmentId" value={projectToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postProjectValue(e)}/>
+                                   </div>
                           </div>
 
                           
@@ -202,7 +211,7 @@ function updateProject()
     
                     </Dialog>
            
-            <Dialog header="Veri Güncelleme Sihirbazı" visible={displayBasicUpdate} style={{ width: '35vw' , height: '35vw'}} modal footer={UpdateDialogFooter} onHide={() => setDisplayUpdate(false)}>
+            <Dialog header="Veri Güncelleme Sihirbazı" visible={displayBasicUpdate} style={{ width: '17vw' , height: '25vw'}} modal footer={UpdateDialogFooter} onHide={() => setDisplayUpdate(false)}>
                       <div className="card">
                           <h5>Öğrenci</h5>
                           <div className="formgroup-inline">
@@ -213,13 +222,17 @@ function updateProject()
                                   </label>
                                   <InputText id="name" value={projectToUpdate?.projectName} onChange={(e) => { updateProjectValue(e); }} type="text" placeholder="Öğrenci Adı" />
                               </div>
-                              <div className="field">
-                                  <label htmlFor="departmentId" className="p-sr-only">
-                                      Department ID
-                                  </label>
-                                  <InputText id="departmentId" value={projectToUpdate?.departmentId+''} onChange={(e) => { updateProjectValue(e); }}  type="text" placeholder="Departman ID" />
-                              </div>
+
+                            
                           </div>
+
+                          <div className="field">
+                                  <label htmlFor="departmentId" className="p-sr-only">
+                                  departmentId
+                                  </label>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Department Id</h5>
+                                    <Dropdown id="departmentId" value={projectToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postProjectValue(e)}/>
+                                   </div>
                       </div>
             </Dialog>
         </div>
@@ -238,6 +251,15 @@ function updateProject()
         ProjectService.getProjects().then((data) => {
             setProjects(data);
             setLoading1(false);
+        });
+
+        DepartmentService.getDepartments()
+        .then((data) => {
+          setDepartments(data);
+          setLoading1(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching departments:', error);
         });
     
         initFilters1();
@@ -264,7 +286,7 @@ function updateProject()
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>PROJELER</h5>
+                    <h5>Projeler</h5>
                     <DataTable
                         value={projects}
                         paginator
@@ -280,11 +302,12 @@ function updateProject()
                         header={header1}
                     >
                         
-                        <Column field="projectName" header="Proje Adı" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman ID" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-
-                        <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
-                        <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
+                        <Column field="projectName" header="Proje Adı"  style={{ minWidth: '12rem' }} />
+                        <Column field="departmentId" header="Departman ID"  style={{ minWidth: '12rem' }} />
+                        <Column field="departmentName" header="Departman Adı"  style={{ minWidth: '12rem' }} />
+                    
+                        <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Sil"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
+                        <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Güncelle"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     </DataTable>
                 </div>
             </div>
