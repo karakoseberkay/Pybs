@@ -215,7 +215,7 @@ declare namespace Demo {
         projectId: number,
         projectName: string,
         departmentId: number;
-        projectDate: string
+        projectDate: string,
     }
 
 

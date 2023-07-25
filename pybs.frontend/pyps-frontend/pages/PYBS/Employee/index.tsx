@@ -25,8 +25,13 @@ const StudentsPage = () => {
     const [postButtonLabel, setPostButtonLabel] = useState('Yeni personel ekle');
     const [departments, setDepartments] = useState<Demo.Department[]>([]);
     const [projects, setProjects] = useState<Demo.Project[]>([]);
+     
+
+    const getDepartmentNameById = (departmentId: any) => {
+        const department = departments.find((dept) => dept.departmentId === departmentId);
+        return department ? department.departmentName : '';
   
-   
+    }
     const PostDialogFooter = (
         <Button type="button" label={postButtonLabel} onClick={() => postEmployee()} icon="pi pi-check" severity="secondary" />
     );
@@ -51,7 +56,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         { label: 'Stajyer', value: 'Stajyer' },
         { label: 'Çalışan', value: 'Çalışan' },
         { label: 'Yönetici', value: 'Yönetici' },
-        // Diğer seviyeleri buraya ekleyebilirsiniz
+     
 
       ];
     
@@ -171,10 +176,11 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
        
 
         var EmployeeToPost : Demo.Employee = {
+           
             employeeId: 0,
         employeeName: "",
         employeeIdNumber: "",
-        departmentId: 0,    
+        departmentId: 0,   
         employeeLevel:"",
         employeeExp: 0,
         offDay:"", 
@@ -434,12 +440,23 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
     }
     
 
+
+
+
+
+
+
+
     useEffect(() => {
 
+      console.log("useeffect")
        
         RefreshData();
 
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); 
+  
+ 
+  
 
     const initFilters1 = () => {
         setFilters1({
@@ -447,20 +464,21 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         });
         setGlobalFilterValue1('');
     };
-
+    
+    
     
 
     const header1 = renderHeader1();
 
     return (
-
-        
-        
-        <div className="grid">
+<div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Çalışan Tablosu</h5>
+                    <h5>Çalışanlar</h5>
+        
+      
                     <DataTable
+                    
                         value={Employies}
                         paginator
                         className="p-datatable-gridlines"
@@ -474,9 +492,10 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                         emptyMessage="Dükkanda adam kalmadı."
                         header={header1}
                     >
-            
+                       
+
                         <Column field="employeeName" header="Çalışan İsmi"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman Adı"  style={{ minWidth: '12rem' }} />
+                        <Column field="departmentId" header="Departman Adı" style={{ minWidth: '12rem' }} body={(rowData) => getDepartmentNameById(rowData.departmentId)} />
                         <Column field="employeeIdNumber" header="Çalışan TC no"  style={{ minWidth: '12rem' }} />
                         <Column field="employeeLevel" header="Çalışan Kıdem"  style={{ minWidth: '12rem' }} />
                         <Column field="employeeExp" header="Tecrübe(Yıl)"  style={{ minWidth: '12rem' }} />
@@ -485,19 +504,15 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     </DataTable>
-                </div>
+                    </div>
             </div>
         </div>
-   
-   
    
    
    
    );
 
    
-
-
 
 
 

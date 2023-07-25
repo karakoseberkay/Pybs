@@ -36,6 +36,11 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         initFilters1();
     };
 
+    const getDepartmentNameById = (departmentId: any) => {
+        const department = departments.find((dept) => dept.departmentId === departmentId);
+        return department ? department.departmentName : '';
+  
+    }
 
     const employeeOptions = departments.map((emp) => ({
         label: emp.departmentName,
@@ -231,7 +236,7 @@ function updateProject()
                                   departmentId
                                   </label>
                                   <h5 style={{display:'-ms-inline-flexbox'}}>Department Id</h5>
-                                    <Dropdown id="departmentId" value={projectToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postProjectValue(e)}/>
+                                    <Dropdown id="departmentId" value={projectToUpdate?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => updateProjectValue(e)}/>
                                    </div>
                       </div>
             </Dialog>
@@ -304,7 +309,7 @@ function updateProject()
                         
                         <Column field="projectName" header="Proje Adı"  style={{ minWidth: '12rem' }} />
                         <Column field="departmentId" header="Departman ID"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentName" header="Departman Adı"  style={{ minWidth: '12rem' }} />
+                        <Column field="departmentId" header="Departman Adı" style={{ minWidth: '12rem' }} body={(rowData) => getDepartmentNameById(rowData.departmentId)} />
                     
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Sil"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Güncelle"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />

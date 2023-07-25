@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\berkay.karakose\\Documents\\GitHub\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {}
+    "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\berkay.karakose\\Documents\\GitHub\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {
+    "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\berkay.karakose\\Documents\\GitHub\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
+        "projectUniqueName": "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
         "projectName": "pybs.backend.api",
-        "projectPath": "C:\\Users\\berkay.karakose\\Documents\\GitHub\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
+        "projectPath": "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
         "packagesPath": "C:\\Users\\berkay.karakose\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\berkay.karakose\\Documents\\GitHub\\Pybs\\pybs.backend\\pybs.backend.api\\obj\\",
+        "outputPath": "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\berkay.karakose\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,34 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[7.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.9, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[7.0.4, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
