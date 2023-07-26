@@ -312,8 +312,8 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                   <label htmlFor="projectId" className="p-sr-only">
                                   projectId
                                   </label>
-                                  <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
-                                    <Dropdown id="projectId" value={EmployeeToPost?.projectId} options={projectOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
+                                  <h5 style={{display:'-ms-inline-flexbox'}}>Proje Kodu</h5>
+                                    <Dropdown id="projectId" value={EmployeeToPost?.projectId} options={projectOptions} optionLabel="label" placeholder="Proje Kodu" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
                                    </div>
                               
                                  </div>

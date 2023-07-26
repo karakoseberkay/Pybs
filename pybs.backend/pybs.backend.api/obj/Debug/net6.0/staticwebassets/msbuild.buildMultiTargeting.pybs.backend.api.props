@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\pybs.backend.api.props" />
+</Project>

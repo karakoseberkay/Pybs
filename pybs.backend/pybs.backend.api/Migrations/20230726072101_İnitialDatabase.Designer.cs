@@ -12,8 +12,8 @@ using pybs.backend.api.Entity;
 namespace pybs.backend.api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230725142030_InitialDatabase")]
-    partial class InitialDatabase
+    [Migration("20230726072101_İnitialDatabase")]
+    partial class İnitialDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

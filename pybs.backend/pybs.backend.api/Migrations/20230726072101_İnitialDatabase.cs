@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace pybs.backend.api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDatabase : Migration
+    public partial class İnitialDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,6 +23,7 @@ namespace pybs.backend.api.Migrations
                 {
                     table.PrimaryKey("PK_DepartmentEntity", x => x.DepartmentId);
                 });
+
 
             migrationBuilder.CreateTable(
                 name: "ProjectEntity",

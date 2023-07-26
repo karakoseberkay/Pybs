@@ -1,2 +1,2 @@
 # Pybs
-Employee management and information system (Personel Yönetim Bilgi Sistemi)
+Employee Management And Information System (Personel Yönetim Bilgi Sistemi)

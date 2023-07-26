@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {}
+    "C:\\Users\\furkan.tozlu\\Source\\Repos\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {
+    "C:\\Users\\furkan.tozlu\\Source\\Repos\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
+        "projectUniqueName": "C:\\Users\\furkan.tozlu\\Source\\Repos\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
         "projectName": "pybs.backend.api",
-        "projectPath": "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
-        "packagesPath": "C:\\Users\\berkay.karakose\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\obj\\",
+        "projectPath": "C:\\Users\\furkan.tozlu\\Source\\Repos\\Pybs\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
+        "packagesPath": "C:\\Users\\furkan.tozlu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\furkan.tozlu\\Source\\Repos\\Pybs\\pybs.backend\\pybs.backend.api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\berkay.karakose\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\furkan.tozlu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -79,7 +79,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -91,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
