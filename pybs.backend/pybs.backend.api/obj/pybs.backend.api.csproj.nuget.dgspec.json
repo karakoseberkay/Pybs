@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {}
+    "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {
+    "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
+        "projectUniqueName": "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
         "projectName": "pybs.backend.api",
-        "projectPath": "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
+        "projectPath": "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
         "packagesPath": "C:\\Users\\berkay.karakose\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\obj\\",
+        "outputPath": "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\berkay.karakose\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SQQBLrCTapzmTw7/v2XAoNldL9DbqKiulqJD4WDVazI3X6uvZarPhntH+qfzYT8W1IoTRyJ0Gq3egJ7CNxiONw==",
+  "dgSpecHash": "J7BTcos+hCkxsy2dHuDIfDCBZLenyKPYtmHZhpGdg5RlbupEJpzTAT6JITbRJOJqIQ3i4bhWMGNy2XCL0G59DQ==",
   "success": true,
-  "projectFilePath": "D:\\Projects\\Pybs\\src\\backend\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
+  "projectFilePath": "C:\\Users\\berkay.karakose\\Desktop\\pybs.backend\\pybs.backend.api\\pybs.backend.api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\berkay.karakose\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\berkay.karakose\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.9\\microsoft.entityframeworkcore.7.0.9.nupkg.sha512",
