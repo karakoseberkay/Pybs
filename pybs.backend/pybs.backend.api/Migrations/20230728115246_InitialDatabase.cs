@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace pybs.backend.api.Migrations
 {
     /// <inheritdoc />
-    public partial class İnitialDatabase : Migration
+    public partial class InitialDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,7 +23,6 @@ namespace pybs.backend.api.Migrations
                 {
                     table.PrimaryKey("PK_DepartmentEntity", x => x.DepartmentId);
                 });
-
 
             migrationBuilder.CreateTable(
                 name: "ProjectEntity",
@@ -57,9 +56,7 @@ namespace pybs.backend.api.Migrations
                     EmployeeExp = table.Column<int>(type: "integer", nullable: false),
                     OffDay = table.Column<string>(type: "text", nullable: false),
                     ProjectId = table.Column<int>(type: "integer", nullable: false),
-                    DepartmentId = table.Column<int>(type: "integer", nullable: false),
-                    DepartmentName = table.Column<string>(type: "text", nullable: false),
-                    ProjectEntityProjectId = table.Column<int>(type: "integer", nullable: true)
+                    DepartmentId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,10 +68,11 @@ namespace pybs.backend.api.Migrations
                         principalColumn: "DepartmentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeEntity_ProjectEntity_ProjectEntityProjectId",
-                        column: x => x.ProjectEntityProjectId,
+                        name: "FK_EmployeeEntity_ProjectEntity_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "ProjectEntity",
-                        principalColumn: "ProjectId");
+                        principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -83,9 +81,9 @@ namespace pybs.backend.api.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeEntity_ProjectEntityProjectId",
+                name: "IX_EmployeeEntity_ProjectId",
                 table: "EmployeeEntity",
-                column: "ProjectEntityProjectId");
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectEntity_DepartmentId",

@@ -18,8 +18,12 @@ namespace pybs.backend.api.Entity
 
         public int DepartmentId { get; set; }
 
+        [ForeignKey(nameof(DepartmentId))]
         public virtual DepartmentEntity? Department { get; set; }
 
 
+
+        [InverseProperty("Project")]
+        public ICollection<EmployeeEntity> Employees { get; } = new List<EmployeeEntity>();
     }
 }

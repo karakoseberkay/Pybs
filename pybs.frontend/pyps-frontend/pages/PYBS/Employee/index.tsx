@@ -26,12 +26,6 @@ const StudentsPage = () => {
     const [departments, setDepartments] = useState<Demo.Department[]>([]);
     const [projects, setProjects] = useState<Demo.Project[]>([]);
      
-
-    const getDepartmentNameById = (departmentId: any) => {
-        const department = departments.find((dept) => dept.departmentId === departmentId);
-        return department ? department.departmentName : '';
-  
-    }
     const PostDialogFooter = (
         <Button type="button" label={postButtonLabel} onClick={() => postEmployee()} icon="pi pi-check" severity="secondary" />
     );
@@ -495,12 +489,12 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                        
 
                         <Column field="employeeName" header="Çalışan İsmi"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman Adı" style={{ minWidth: '12rem' }} body={(rowData) => getDepartmentNameById(rowData.departmentId)} />
+                        <Column field="departmentName" header="Departman Adı" style={{ minWidth: '12rem' }} />
                         <Column field="employeeIdNumber" header="Çalışan TC no"  style={{ minWidth: '12rem' }} />
                         <Column field="employeeLevel" header="Çalışan Kıdem"  style={{ minWidth: '12rem' }} />
                         <Column field="employeeExp" header="Tecrübe(Yıl)"  style={{ minWidth: '12rem' }} />
                         <Column field="offDay" header="İzin Durumu"  style={{ minWidth: '12rem' }} body={actionBodyTemplateOffDay}/>
-                        <Column field="projectId" header="Proje Kodu"  style={{ minWidth: '12rem' }} />
+                        <Column field="projectName" header="Proje Kodu"  style={{ minWidth: '12rem' }} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     </DataTable>

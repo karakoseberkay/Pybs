@@ -22,18 +22,19 @@ namespace pybs.backend.api.Controllers
 
         // GET: api/<DepartmentController>
         [HttpGet]
-public IEnumerable<AddEmployeeDto> GetEmployees()
+public IEnumerable<EmployeeListDto> GetEmployees()
 {
-    var employeesFromDatabase = _dataContext.EmployeeEntities.ToList();
-    var employeeDtos = employeesFromDatabase.Select(employeeEntity => new AddEmployeeDto
+    //var employeesFromDatabase = _dataContext.EmployeeEntities.ToList();
+
+    var employeeDtos = _dataContext.EmployeeEntities.Select(employeeEntity => new EmployeeListDto
     {
+        EmployeeId = employeeEntity.EmployeeId,
         EmployeeName = employeeEntity.EmployeeName,
         EmployeeIdNumber = employeeEntity.EmployeeIdNumber,
         EmployeeLevel = employeeEntity.EmployeeLevel,
         EmployeeExp = employeeEntity.EmployeeExp,
-        DepartmentId = employeeEntity.DepartmentId,
-        DepartmentName = employeeEntity.DepartmentName,
-        ProjectId = employeeEntity.ProjectId,
+        DepartmentName = employeeEntity.Department.DepartmentName,
+        ProjectName = employeeEntity.Project.ProjectName,
         OffDay = employeeEntity.OffDay
     });
 
@@ -42,9 +43,19 @@ public IEnumerable<AddEmployeeDto> GetEmployees()
 
         // GET api/<DepartmentController>/5
         [HttpGet("{id}")]
-        public EmployeeEntity Get(int id)
+        public EmployeeDetailDto? Get(int id)
         {
-            return _dataContext.EmployeeEntities.FirstOrDefault(s => s.EmployeeId == id);
+            return _dataContext.EmployeeEntities.Select(t=> new EmployeeDetailDto
+            {
+                EmployeeId=t.EmployeeId,
+                EmployeeName=t.EmployeeName,
+                EmployeeIdNumber=t.EmployeeIdNumber,
+                EmployeeLevel = t.EmployeeLevel,
+                EmployeeExp = t.EmployeeExp,
+                DepartmentId = t.DepartmentId,
+                OffDay=t.OffDay,
+                ProjectId = t.ProjectId
+            }).FirstOrDefault(s => s.EmployeeId == id);
         }
 
         // POST api/<DepartmentController>
@@ -60,7 +71,6 @@ public IEnumerable<AddEmployeeDto> GetEmployees()
             EmployeeToSave.EmployeeLevel = employee.EmployeeLevel;
             EmployeeToSave.EmployeeExp = employee.EmployeeExp;
             EmployeeToSave.DepartmentId = employee.DepartmentId;
-            EmployeeToSave.DepartmentName = employee.DepartmentName;
             EmployeeToSave.ProjectId = employee.ProjectId;
             EmployeeToSave.OffDay = employee.OffDay;
 

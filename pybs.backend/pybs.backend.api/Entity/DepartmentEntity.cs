@@ -14,8 +14,10 @@ namespace pybs.backend.api.Entity
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
 
-     
+        [InverseProperty("Department")]
+        public ICollection<EmployeeEntity> Employees { get; } = new List<EmployeeEntity>();
 
-
+        [InverseProperty("Department")]
+        public ICollection<ProjectEntity> Projects { get; } = new List<ProjectEntity>();
     }
 }
