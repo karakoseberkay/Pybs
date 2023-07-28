@@ -8,6 +8,12 @@ export const EmployeeService = {
             .then((d) => d as Demo.Employee[]);
     },
 
+    getEmployeeById(id:any) {
+        return fetch('http://localhost:5284/api/employee/'+id)
+            .then((res) => res.json())
+            .then((d) => d as Demo.Employee);
+    },
+
     deleteEmployee(id:any){
         return fetch('http://localhost:5284/api/employee/'+id, {
             method: 'DELETE'

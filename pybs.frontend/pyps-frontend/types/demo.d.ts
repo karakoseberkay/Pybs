@@ -204,11 +204,13 @@ declare namespace Demo {
         employeeId: number,
         employeeName: string,
         departmentId: number,
+    departmentName: string,
         employeeIdNumber: string,
         employeeLevel: string,
         employeeExp: number,
         offDay: string,
-        projectId: number
+        projectId: number,
+      projectName: string
     }
 
     interface Project{
