@@ -50,7 +50,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
 function updateProject()
     {
-        ProjectService.updateProject(projectToUpdate!);
+        ProjectService.updateProject(projectToUpdate!).then(RefreshData);
         
         setDisplayUpdate(false);
     }
@@ -110,8 +110,9 @@ function updateProject()
    
 
     
-    function handleUpdateClick(project:Demo.Project){
-
+    function handleUpdateClick(project:Demo.Project)
+     {
+         
         setProjectToUpdate(project);
 
         setDisplayUpdate(true);
@@ -225,7 +226,7 @@ function updateProject()
                                   <label htmlFor="name" className="p-sr-only">
                                       Firstname
                                   </label>
-                                  <InputText id="name" value={projectToUpdate?.projectName} onChange={(e) => { updateProjectValue(e); }} type="text" placeholder="Öğrenci Adı" />
+                                  <InputText id="projectName" value={projectToUpdate?.projectName} onChange={(e) => { updateProjectValue(e); }} type="text" placeholder="Öğrenci Adı" />
                               </div>
 
                             
@@ -253,6 +254,7 @@ function updateProject()
     };
     function RefreshData() {
 
+        
         ProjectService.getProjects().then((data) => {
             setProjects(data);
             setLoading1(false);
@@ -308,9 +310,8 @@ function updateProject()
                     >
                         
                         <Column field="projectName" header="Proje Adı"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman ID"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman Adı" style={{ minWidth: '12rem' }} body={(rowData) => getDepartmentNameById(rowData.departmentId)} />
-                    
+                        <Column field="departmentName" header="Departman Adı"  style={{ minWidth: '12rem' }} />
+                       
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Sil"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Güncelle"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     </DataTable>
@@ -327,4 +328,8 @@ function updateProject()
 
 
 export default ProjectsPage;
+
+function then(RefreshData: () => void) {
+    throw new Error('Function not implemented.');
+}
 

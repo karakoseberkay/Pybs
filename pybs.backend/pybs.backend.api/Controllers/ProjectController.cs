@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pybs.backend.api.Entity;
 using pybs.backend.api.DTO.ProjectDto;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,17 +23,30 @@ namespace pybs.backend.api.Controllers
 
         // GET: api/<DepartmentController>
         [HttpGet]
-        public IEnumerable<ProjectEntity> GetProjects()
+        public IEnumerable<ProjectListDto> GetProjects()
         {
-            var DataBase = _dataContext.ProjectEntities.ToList();
-            return DataBase;
+            // var DataBase = _dataContext.ProjectEntities.ToList();
+            var ProjectDtos = _dataContext.ProjectEntities.Select(ProjectEntity => new ProjectListDto
+            {
+                ProjectId = ProjectEntity.ProjectId,
+                ProjectName = ProjectEntity.ProjectName,
+                DepartmentName = ProjectEntity.Department.DepartmentName
+            });
+
+            return ProjectDtos;
         }
 
         // GET api/<DepartmentController>/5
         [HttpGet("{id}")]
-        public ProjectEntity Get(int id)
+        public ProjectDetailDto? Get(int id)
         {
-            return _dataContext.ProjectEntities.FirstOrDefault(s => s.ProjectId == id);
+            return _dataContext.ProjectEntities.Select(t => new ProjectDetailDto
+
+            {
+                ProjectId = t.ProjectId,
+                ProjectName = t.ProjectName,
+                DepartmentId = t.DepartmentId,
+            }).FirstOrDefault(s => s.ProjectId == id);
         }
 
         // POST api/<DepartmentController>

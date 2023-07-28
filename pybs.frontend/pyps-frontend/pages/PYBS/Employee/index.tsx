@@ -205,11 +205,15 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
       }
 
 
-    function handleUpdateClick(Employee:Demo.Employee){
+    function handleUpdateClick(employee:Demo.Employee){
+       EmployeeService.getEmployeebyId(employee.employeeId)
+       .then(employeeFromService => {
 
-        setEmployeeToUpdate(Employee);
+        setEmployeeToUpdate({...employeeFromService});
 
         setDisplayUpdate(true);
+       }) 
+        
     }
 
     function updateEmployeeValue(changeAction:any){
@@ -358,20 +362,20 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                  
                                       </div>
                                       <div className="field">
-                                  <label htmlFor="departmentId" className="p-sr-only">
+                                  <label htmlFor="departmentName" className="p-sr-only">
                                   Departman Adı
                                   </label>
                                   <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
-                                    <Dropdown id="departmentId" value={EmployeeToUpdate?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
+                                    <Dropdown id="departmentName" value={EmployeeToUpdate?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
                                    </div>
 
                                    
                                    <div className="field">
-                                  <label htmlFor="projectId" className="p-sr-only">
+                                  <label htmlFor="projectName" className="p-sr-only">
                                   Proje Kodu
                                   </label>
                                   <h5 style={{display:'-ms-inline-flexbox'}}>Proje Kodu</h5>
-                                    <Dropdown id="projectId" value={EmployeeToUpdate?.projectId} options={projectOptions} optionLabel="label" placeholder="Proje seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
+                                    <Dropdown id="projectName" value={EmployeeToUpdate?.projectId} options={projectOptions} optionLabel="label" placeholder="Proje seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
                                    </div>
 
 
