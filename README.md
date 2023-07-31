@@ -18,7 +18,7 @@
 `3D- Open Extension menu and write Docker on search bar, and download the Docker.` <br/>
 `4D- Open explorer in vs code and right click on docker.yml file and click the compose up button for create docker image. After these step, you can close the yml file.` <br/>
 `5D- Finished for docker steps.` <br/>
-`` <br/>
+<br/>
 `1P- For create a Server, right click on servers button and select register row. Then click on server button.` <br/>
 `2P- You can choose any name for server. ` <br/>
 `3P- You should write localhost in Host name/address, in Connection.` <br/>
@@ -28,7 +28,7 @@
 
 `Final step- Write update-databse on Package manager consol in backend.` <br/>
 `IF YOU CHANGE PORT OR SERVER SETTINGS, YOU SHOULD CHANGE THE PORT AND SERVER SETTİNGS AT DATACONTEXT.CS AND APPSETTİNGS.JSON İN BACKEND ` <br/>
-`` <br/>
+ <br/>
 ## 3- Change the settings in your front-end and back-end projects to connect Containers <br/>
 `g`
 ## Migration And Postgresql <br/>
