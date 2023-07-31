@@ -46,6 +46,6 @@
 *⊛ Yous should check on pg admin to see if tables added*<br/>
 
 <br/>
-###Check Our Linkedn Profiles To Contact Us: 
-[Berkay Karaköse](https://www.linkedin.com/in/berkay-karak%C3%B6se-93527415b)
+### Check Our Linkedn Profiles To Contact Us: <br/>
+[Berkay Karaköse](https://www.linkedin.com/in/berkay-karak%C3%B6se-93527415b) <br/>
 [Furkan Onur Tozlu](https://www.linkedin.com/in/furkan-onur-tozlu-568915233)
