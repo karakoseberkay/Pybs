@@ -43,7 +43,7 @@
 *⊛ Then you should go to visual studio and click on view -> other windows -> Package manager console*<br/>
 *⊛ Write *`PM> add-migration İnitialDatabase`* then run*<br/>
 *⊛ İf its succeded you should write*`PM>Update-database`<br/>
-*⊛ Yous should check on pg admin to see if tables added*<br/>
+*⊛ Yous should check on pg admin to see if tables added*
 
 
 ### Check Our Linkedn Profiles To Contact Us: 
