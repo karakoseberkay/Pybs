@@ -8,19 +8,24 @@
 3-PgAdmin4 <br/>
 
 # Stages <br/>
-![ghhg](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/Docker-ws.png)
+
 ## 1-Download repository to your destkop <br/>
 *1-Click on the code button and copy the reopsitory link* <br/>
 *2-At visual studio click on "Clone Reapository" and  paste the link and download*
 *You should add .next and node_module files in front-end with*`npm install next and node_module` <br/>
+*You sould add nuget packages on project by going to `Project -> Manage Nuget Packages` *
+*Essential packages that you need*
+![packages](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/NugetPackages.png)
 ## 2- Download Docker and PgAdmin after connecting them <br/>
 *1D- First of all, install Docker and postgresql apps and download.*
 *2D- Run the DOCKER-WS file with VS code.* <br/>
 *3D- Open Extension menu and write Docker on search bar, and download the Docker.* <br/>
+![Docker-Ws](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/Docker-ws.png)
 *4D- Open explorer in vs code and right click on docker.yml file and click the compose up button for create docker image. After these step, you can close the yml file.* <br/>
 *5D- Finished for docker steps.* <br/>
 <br/>
 *1P- For create a Server, right click on servers button and select register row. Then click on server button.* <br/>
+![CREATE SERVER](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/CreatingServer.png)
 *2P- You can choose any name for server. * <br/>
 *3P- You should write localhost in Host name/address, in Connection.* <br/>
 *4P- Port should be 5432 but if your pc has any accesible port, you can prefer these ports.* <br/>
