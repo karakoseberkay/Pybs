@@ -10,9 +10,25 @@
 # Stages <br/>
 
 ## 1-Download repository to your destkop <br/>
-`g` <br/>
+`1-Click on the code button and copy the reopsitory link` <br/>
+`2-At visual studio click on "Clone Reapository" and  paste the link and download`
 ## 2- Download Docker and PgAdmin after connecting them <br/>
-`v`
+`1D- First of all, install Docker and postgresql apps and download.`
+`2D- Run the DOCKER-WS file with VS code.` <br/>
+`3D- Open Extension menu and write Docker on search bar, and download the Docker.` <br/>
+`4D- Open explorer in vs code and right click on docker.yml file and click the compose up button for create docker image. After these step, you can close the yml file.` <br/>
+`5D- Finished for docker steps.` <br/>
+`` <br/>
+`1P- For create a Server, right click on servers button and select register row. Then click on server button.` <br/>
+`2P- You can choose any name for server. ` <br/>
+`3P- You should write localhost in Host name/address, in Connection.` <br/>
+`4P- Port should be 5432 but if your pc has any accesible port, you can prefer these ports.` <br/>
+`5P- Maintenance database, Username and Password should be postgres because write on the yml file.` <br/>
+`6P- Click on Save button.` <br/>
+
+`Final step- Write update-databse on Package manager consol in backend.` <br/>
+`IF YOU CHANGE PORT OR SERVER SETTINGS, YOU SHOULD CHANGE THE PORT AND SERVER SETTİNGS AT DATACONTEXT.CS AND APPSETTİNGS.JSON İN BACKEND ` <br/>
+`` <br/>
 ## 3- Change the settings in your front-end and back-end projects to connect Containers <br/>
 `g`
 ## Migration And Postgresql <br/>
