@@ -76,6 +76,7 @@ namespace pybs.backend.api.Controllers
                 return "Proje Bulunamadı";
 
             ProjectFromDatabase.ProjectName = project.ProjectName;
+            ProjectFromDatabase.DepartmentId = project.DepartmentId;
             _dataContext.ProjectEntities.Update(ProjectFromDatabase);
             _dataContext.SaveChanges();
 

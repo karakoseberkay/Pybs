@@ -112,10 +112,13 @@ function updateProject()
     
     function handleUpdateClick(project:Demo.Project)
      {
-         
-        setProjectToUpdate(project);
+        ProjectService.getProjectbyId(project.projectId)
+        .then(projectFromService => {
 
-        setDisplayUpdate(true);
+            setProjectToUpdate({...projectFromService});
+    
+            setDisplayUpdate(true);
+           }) 
     }
 
     function updateProjectValue(changeAction:any){

@@ -7,6 +7,12 @@ export const ProjectService = {
             .then((res) => res.json())
             .then((d) => d as Demo.Project[]);
     },
+    getProjectbyId(id: any) {
+        return fetch('http://localhost:5284/api/project/'+id )
+            .then((res) => res.json())
+            .then((d) => d as Demo.Project);
+    },
+
 
     deleteProject(id:any){
         return fetch('http://localhost:5284/api/project/'+id, {
