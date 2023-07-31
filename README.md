@@ -12,6 +12,7 @@
 ## 1-Download repository to your destkop <br/>
 `1-Click on the code button and copy the reopsitory link` <br/>
 `2-At visual studio click on "Clone Reapository" and  paste the link and download`
+`You shoul`
 ## 2- Download Docker and PgAdmin after connecting them <br/>
 `1D- First of all, install Docker and postgresql apps and download.`
 `2D- Run the DOCKER-WS file with VS code.` <br/>
