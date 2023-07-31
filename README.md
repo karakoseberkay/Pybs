@@ -8,7 +8,7 @@
 3-PgAdmin4 <br/>
 
 # Stages <br/>
-
+![ghhg](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/Docker-ws.png)
 ## 1-Download repository to your destkop <br/>
 *1-Click on the code button and copy the reopsitory link* <br/>
 *2-At visual studio click on "Clone Reapository" and  paste the link and download*
