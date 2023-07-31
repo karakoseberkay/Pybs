@@ -308,8 +308,7 @@ function updateProject()
                     >
                         
                         <Column field="projectName" header="Proje Adı"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman ID"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentId" header="Departman Adı" style={{ minWidth: '12rem' }} body={(rowData) => getDepartmentNameById(rowData.departmentId)} />
+                         <Column field="departmentId" header="Departman Adı" style={{ minWidth: '12rem' }} body={(rowData) => getDepartmentNameById(rowData.departmentId)} />
                     
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Sil"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }}  header="Güncelle"  bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />

@@ -370,6 +370,9 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                
                 <Dialog header="Veri Güncelleme Sihirbazı" visible={displayBasicUpdate} style={{ width: '17vw' , height: '35vw'}} modal footer={UpdateDialogFooter} onHide={() => setDisplayUpdate(false)}>
                           <div className="card">
+                              
+                              
+                              
                               <h5>Çalışan İsmi</h5>
                               <div className="formgroup-inline">
                                  
@@ -381,20 +384,20 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                                  
                                       </div>
                                       <div className="field">
-                                  <label htmlFor="departmentName" className="p-sr-only">
+                                  <label htmlFor="departmentId" className="p-sr-only">
                                   Departman Adı
                                   </label>
                                   <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
-                                    <Dropdown id="departmentName" value={EmployeeToUpdate?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
+                                    <Dropdown id="departmentId" value={EmployeeToUpdate?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
                                    </div>
 
                                    
                                    <div className="field">
-                                  <label htmlFor="projectName" className="p-sr-only">
+                                  <label htmlFor="projectId" className="p-sr-only">
                                   Proje Kodu
                                   </label>
                                   <h5 style={{display:'-ms-inline-flexbox'}}>Proje Kodu</h5>
-                                    <Dropdown id="projectName" value={EmployeeToUpdate?.projectId} options={projectOptions} optionLabel="label" placeholder="Proje seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
+                                    <Dropdown id="projectId" value={EmployeeToUpdate?.projectId} options={projectOptions} optionLabel="label" placeholder="Proje seçin" className="w-full md:w-14rem" onChange={(e) => updateEmployeeValue(e)}/>
                                    </div>
 
 

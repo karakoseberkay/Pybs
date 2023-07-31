@@ -11,7 +11,7 @@ using pybs.backend.api.Entity;
 namespace pybs.backend.api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230728125136_InitialDatabase")]
+    [Migration("20230731115001_InitialDatabase")]
     partial class InitialDatabase
     {
         /// <inheritdoc />

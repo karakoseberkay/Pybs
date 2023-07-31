@@ -267,8 +267,7 @@ function updateDepartment()
                         
                     >
                         
-                        <Column field="departmentId" header="Id"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentName" header="Departman Adı"  style={{ minWidth: '12rem' }} />
+                       <Column field="departmentName" header="Departman Adı"  style={{ minWidth: '12rem' }} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
                         <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
                     

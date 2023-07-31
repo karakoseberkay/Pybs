@@ -35,6 +35,7 @@ public IEnumerable<EmployeeListDto> GetEmployees()
         EmployeeExp = employeeEntity.EmployeeExp,
         DepartmentName = employeeEntity.Department.DepartmentName,
         ProjectName = employeeEntity.Project.ProjectName,
+
         OffDay = employeeEntity.OffDay
     });
 

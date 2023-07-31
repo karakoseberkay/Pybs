@@ -27,6 +27,7 @@ namespace pybs.backend.api.Entity
         public int DepartmentId { get; set; }
 
 
+
         [ForeignKey(nameof(ProjectId))]
         public virtual ProjectEntity? Project { get; set; }
         
