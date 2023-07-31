@@ -15,7 +15,7 @@
 *You should add .next and node_module files in front-end with*`npm install next and node_module` <br/>
 *You sould add nuget packages on project by going to `Project -> Manage Nuget Packages` *
 *Essential packages that you need*
-![packages](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/NugetPackages.png)
+![packages](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/NugetPackages.png) <br/>
 ## 2- Download Docker and PgAdmin after connecting them <br/>
 *1D- First of all, install Docker and postgresql apps and download.*
 *2D- Run the DOCKER-WS file with VS code.* <br/>
@@ -26,6 +26,7 @@
 <br/>
 *1P- For create a Server, right click on servers button and select register row. Then click on server button.* <br/>
 ![CREATE SERVER](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/CreatingServer.png)
+![Register](https://github.com/karakoseberkay/Pybs/blob/project-update-entitiy-to-dto/img/register-server.png)<br/>
 *2P- You can choose any name for server. * <br/>
 *3P- You should write localhost in Host name/address, in Connection.* <br/>
 *4P- Port should be 5432 but if your pc has any accesible port, you can prefer these ports.* <br/>
@@ -43,3 +44,8 @@
 *⊛ Write *`PM> add-migration İnitialDatabase`* then run*<br/>
 *⊛ İf its succeded you should write*`PM>Update-database`<br/>
 *⊛ Yous should check on pg admin to see if tables added*<br/>
+
+<br/>
+###Check Our Linkedn Profiles To Contact Us: 
+[Berkay Karaköse](https://www.linkedin.com/in/berkay-karak%C3%B6se-93527415b)
+[Furkan Onur Tozlu](https://www.linkedin.com/in/furkan-onur-tozlu-568915233)
