@@ -24,20 +24,22 @@ namespace pybs.backend.api.Controllers
         [HttpGet]
 public IEnumerable<EmployeeListDto> GetEmployees()
 {
-    //var employeesFromDatabase = _dataContext.EmployeeEntities.ToList();
+            //var employeesFromDatabase = _dataContext.EmployeeEntities.ToList();
 
-    var employeeDtos = _dataContext.EmployeeEntities.Select(employeeEntity => new EmployeeListDto
-    {
-        EmployeeId = employeeEntity.EmployeeId,
-        EmployeeName = employeeEntity.EmployeeName,
-        EmployeeIdNumber = employeeEntity.EmployeeIdNumber,
-        EmployeeLevel = employeeEntity.EmployeeLevel,
-        EmployeeExp = employeeEntity.EmployeeExp,
-        DepartmentName = employeeEntity.Department.DepartmentName,
-        ProjectName = employeeEntity.Project.ProjectName,
+            var employeeDtos = _dataContext.EmployeeEntities.Select(employeeEntity => new EmployeeListDto
+            {
+                EmployeeId = employeeEntity.EmployeeId,
+                EmployeeName = employeeEntity.EmployeeName,
+                EmployeeIdNumber = employeeEntity.EmployeeIdNumber,
+                EmployeeLevel = employeeEntity.EmployeeLevel,
+                EmployeeExp = employeeEntity.EmployeeExp,
+                DepartmentName = employeeEntity.Department.DepartmentName,
+                ProjectName = employeeEntity.Project.ProjectName,
+
 
         OffDay = employeeEntity.OffDay
-    });
+            }) ;
+
 
     return employeeDtos;
 }
@@ -74,6 +76,8 @@ public IEnumerable<EmployeeListDto> GetEmployees()
             EmployeeToSave.DepartmentId = employee.DepartmentId;
             EmployeeToSave.ProjectId = employee.ProjectId;
             EmployeeToSave.OffDay = employee.OffDay;
+          
+
 
             _dataContext.EmployeeEntities.Add(EmployeeToSave);
             _dataContext.SaveChanges();

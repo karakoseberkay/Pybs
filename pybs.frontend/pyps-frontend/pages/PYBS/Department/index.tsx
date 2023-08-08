@@ -82,11 +82,29 @@ function updateDepartment()
         setDepartmentToUpdate(department);
         setDisplayUpdate(true);
     }
+      
+    function checkConnectedEmployees(departmentName: string): boolean {
+        // departmanId'ye bağlı çalışanları kontrol et
+        const connectedEmployees = deparments.filter((department) => department.departmentName === departmentName);
+        return connectedEmployees.length > 0;
+      }
 
     function handleDeleteClick(departmentToDelete:any){
+        const hasConnectedEmployees = checkConnectedEmployees(departmentToDelete);
 
-        setDepartmentIdToDelete(departmentToDelete);
-        setDisplayConfirmation(true);
+        if (hasConnectedEmployees) {
+          // Departmana bağlı çalışanlar varsa uyarı mesajı göster
+          
+          console.log("Bu departmanın bağlı çalışanları var. Departmanı silemezsiniz.");
+
+        return; // İşlemi durdur
+        } else {
+            setDepartmentIdToDelete(departmentToDelete);
+            setDisplayConfirmation(true);
+           
+          // Departmana bağlı çalışanlar yoksa doğrudan silme işlemini gerçekleştir
+        
+        }
     }
 
     

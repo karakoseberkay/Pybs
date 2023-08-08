@@ -24,8 +24,8 @@ const AppMenu = () => {
                 { label: 'Departman Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/Department' },
                 
                 { label: 'Proje Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/Project' },
-                { label: 'Çalışan Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/Employee' }
-                
+                { label: 'Çalışan Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/Employee' },
+             //   { label: 'Belge Tablosu', icon: 'pi pi-fw pi-table', to: '/PYBS/File' }
                
             ]
         },

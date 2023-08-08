@@ -201,23 +201,32 @@ declare namespace Demo {
     }
 
     type Employee = {
-        employeeId: number,
-        employeeName: string,
-        departmentId: number,
-    departmentName: string,
-        employeeIdNumber: string,
-        employeeLevel: string,
-        employeeExp: number,
-        offDay: string,
-        projectId: number,
-      projectName: string
-    }
+        documentContent: string; // Store the URL of the PDF document
+        employeeId: number;
+        employeeName: string;
+        departmentId: number;
+        departmentName: string;
+        employeeIdNumber: string;
+        employeeLevel: string;
+        employeeExp: number;
+        projectId: number;
+        projectName: string;
+      };
+      
 
     interface Project{
         projectId: number,
         projectName: string,
-        departmentId: number;
+        departmentId: number,
         projectDate: string,
+    }
+
+    interface File{
+
+        fileId: number,
+        fileName: string,
+        fileSize: number
+
     }
 
 

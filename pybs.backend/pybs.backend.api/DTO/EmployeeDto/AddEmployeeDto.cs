@@ -18,6 +18,8 @@ namespace pybs.backend.api.DTO.EmployeeDto
         public int DepartmentId { get; set; }
 
         public int ProjectId { get; set; }
-        
+
+        //public IFormFile file { get; set; }
+
     }
 }

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import React, { useState, useEffect, useRef } from 'react';
+import { FilterMatchMode } from 'primereact/api';
 import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -8,16 +8,19 @@ import { DepartmentService } from '../../../demo/service/DepartmentService';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Demo } from '../../../types/types';
-import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+import { Dropdown } from 'primereact/dropdown';
 import { ProjectService } from '../../../demo/service/ProjectService';
-import { error } from 'console';
+import { FileUpload } from 'primereact/fileupload';
+import { SplitButton } from 'primereact/splitbutton';
 
 const StudentsPage = () => {
     const [EmployeeToPost, setEmployeeToPost] = useState<Demo.Employee>();    
     const [DepartmentId, setDepartmentId] = useState<Demo.Department>();
     const [displayBasicPost, setDisplayPost] = useState(false);
+    const [displayBasicOffday, setDisplayOffday] = useState(false);
     const [Employies, setEmployies] = useState<Demo.Employee[]>([]);
     const [EmployeeToUpdate, setEmployeeToUpdate] = useState<Demo.Employee>();
+    const [EmployeeToOffday, setEmployeeToOffday] = useState<Demo.Employee>();
     const [displayBasicUpdate, setDisplayUpdate] = useState(false);
     const [filters1, setFilters1] = useState<DataTableFilterMeta>({});
     const [loading1, setLoading1] = useState(true);
@@ -25,7 +28,45 @@ const StudentsPage = () => {
     const [postButtonLabel, setPostButtonLabel] = useState('Yeni personel ekle');
     const [departments, setDepartments] = useState<Demo.Department[]>([]);
     const [projects, setProjects] = useState<Demo.Project[]>([]);
-     
+    const fileUploadRef = useRef<FileUpload>(null);
+    const [selectedCommand, setSelectedCommand] = useState('');
+    const [ departmentIdToDelete, setDepartmentIdToDelete] = useState<number>();
+    const [displayDocumentModal, setDisplayDocumentModal] = useState(false);
+      // State to manage the PDF document URL for display
+      const [pdfDocumentUrl, setPdfDocumentUrl] = useState<string | null>(null);
+
+const [selectedDocument, setSelectedDocument] = useState<Demo.Employee | null>(null);
+
+
+
+
+const handleAction = (EmployeeRow: Demo.Employee, command: string) => {
+  switch (command) {
+      case 'Güncelle':
+          handleUpdateClick(EmployeeRow);
+          console.log('Güncelleme işlemi yapılıyor');
+          break;
+      case 'Sil':
+          handleDeleteClick(EmployeeRow.employeeId);
+          console.log('Silme işlemi yapılıyor');
+          break;
+      case 'Belge Yükle':
+          handleOffday(EmployeeRow);
+          console.log('Belge yükleme işlemi yapılıyor');
+          break;
+      case 'Belge Görüntüle':
+          viewDocument(EmployeeRow);
+          console.log('Belge görüntüleme işlemi yapılıyor');
+          break;
+      default:
+          console.log('Geçersiz komut');
+          break;
+  }
+  setSelectedCommand('İşlemeler'); //bu komut seçi sabit tutuyor
+};
+
+
+    
     const PostDialogFooter = (
         <Button type="button" label={postButtonLabel} onClick={() => postEmployee()} icon="pi pi-check" severity="secondary" />
     );
@@ -34,17 +75,16 @@ const StudentsPage = () => {
     const confirmationDialogFooter = (
         <>
             <Button type="button" label="Hayır" icon="pi pi-times" onClick={() => setDisplayConfirmation(false)} text />
-            <Button type="button" label="Evet" icon="pi pi-check" onClick={deleteEmployee} text autoFocus />
+            <Button type="button" label="Sil" icon="pi pi-check" onClick={deleteEmployee} text autoFocus />
         </>
     );
     
     const [isTCKNValid, setIsTCKNValid] = useState(true);
 
-const [displayConfirmation, setDisplayConfirmation] = useState(false);
+    const [displayConfirmation, setDisplayConfirmation] = useState(false);
     const clearFilter1 = () => {
         initFilters1();
     };
-
 
     const employeeLevels = [
         { label: 'Stajyer', value: 'Stajyer' },
@@ -54,11 +94,49 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
       ];
 
-    function deleteEmployee(id:any)
+
+
+      const handleFileUpload = (event: any, employeeId: any) => {
+      
+        const file = event.files[0];
+        if (file) {
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          // Burada formData'yı sunucuya gönderebilirsiniz.
+          // Örneğin, belgeyi EmployeeToPost nesnesine ekleyebilirsiniz.
+          // formData.append('employeeId', EmployeeToPost?.employeeId);
+          // formData.append('employeeName', EmployeeToPost?.employeeName);
+          // ...
+          
+          // Sunucuya formData'yı gönderme işlemi burada gerçekleştirilecek.
+          // Bu örnekte, sadece FormData'yı göstermek için konsola yazdırıyoruz.
+          EmployeeService.postFile(employeeId, file).then(RefreshData)
+          setDisplayOffday(false);
+          console.log('FormData:', formData);
+        }
+      };
+
+
+     
+
+
+      
+    function deleteEmployee()
     {
-        EmployeeService.deleteEmployee(id).then(RefreshData)
+        EmployeeService.deleteEmployee(departmentIdToDelete).then(RefreshData);
+        setDisplayConfirmation(false);
         console.log('Deleting...');
     }
+
+    function handleDeleteClick(departmentToDelete:any){
+
+      setDepartmentIdToDelete(departmentToDelete);
+      setDisplayConfirmation(true);
+  }
+
+  
+
 
     function updateEmployee()
     {
@@ -74,10 +152,69 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
         setFilters1(_filters1);
         setGlobalFilterValue1(value);
     };
+
     
-    const deleteActionBodyTemplate = (row:any) => {
-        return <Button style={{margin :'1px'}} label="Sil" icon="pi pi-trash" severity="danger" onClick={() => deleteEmployee(row.employeeId) } />;
-    }
+    const viewAndDownloadDocument = (employee: Demo.Employee) => {
+      // Belgeyi indirme işlemi
+      const a = document.createElement('a');
+      a.href = "http://localhost:5284/api/FileUpload/get/"+employee.employeeId;
+      a.target = '_blank'; // Yeni bir sekmede açılmasını sağlar
+      a.click();
+    
+      // Log any errors that might occur
+      a.addEventListener('error', (event) => {
+        console.error('Error occurred during file download:', event);
+      });
+    };
+    
+  
+   
+    const ActionBodyTemplate = (row: Demo.Employee) => {
+      const items = [
+
+       
+      
+          {
+              label: 'Güncelle',
+              icon: 'pi pi-refresh',
+              command: () => {
+                  setSelectedCommand('Güncelle');
+                  handleAction(row, 'Güncelle'); // Call the handleAction function
+              },
+          },
+          {
+              label: 'Sil',
+              icon: 'pi pi-times',
+              command: () => {
+                  setSelectedCommand('Sil');
+                  handleAction(row, 'Sil'); // Call the handleAction function
+              },
+          },
+          {
+              label: 'Belge Yükle',
+              icon: 'pi pi-upload',
+              command: () => {
+                  setSelectedCommand('Belge Yükle');
+                  handleAction(row, 'Belge Yükle'); // Call the handleAction function
+              },
+          },
+          {
+            label: 'Belge Görüntüle ve İndir',
+            icon: 'pi pi-eye',
+            command: () => {
+               
+                viewAndDownloadDocument(row); // Burada belge içeriği (PDF URL) geçirin
+            },
+        },
+      ];
+      return (
+        <SplitButton
+        model={items}
+        severity="secondary"
+        label={selectedCommand || 'Seç'}
+        onClick={() => handleAction(row, selectedCommand)}
+    />);
+  };
 
     const employeeOptions = departments.map((emp) => ({
         label: emp.departmentName,
@@ -91,6 +228,39 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
       }));
 
 
+      const viewDocument = (employeeRow: Demo.Employee) => {
+        setSelectedDocument(employeeRow);
+    
+        // Belge içeriğini al
+        EmployeeService.getDocumentContent(employeeRow.employeeId)
+            .then(pdfUrl => {
+                setPdfDocumentUrl(pdfUrl);
+               
+            })
+            .catch(error => {
+                console.error('Error fetching document content:', error);
+            });
+    
+    
+    };
+
+    
+
+      
+
+/*
+      
+const EmployeeComponent = ({ employee }) => {
+  const handleFileUpload = (file, employeeId:Demo.Employee) => {
+    if (file) {
+      // Dosya yükleme işlemlerini gerçekleştirin, burada seçilen dosyayı kullanabilirsiniz.
+      console.log('Dosya yüklendi:', file);
+      console.log('Çalışan ID:', employeeId);
+    } else {
+      console.log('Dosya yükleme iptal edildi.');
+    }
+  };
+*/
     function checkTCKNValidity(tckn: string): boolean {
         // Türkiye Cumhuriyeti kimlik numarası 11 haneli olmalıdır
         if (tckn.length !== 11) {
@@ -185,30 +355,24 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 }}
     
       
-    function handlePostClick(){
+function handlePostClick() {
+  var EmployeeToPost: Demo.Employee = {
+    employeeId: 0,
+    employeeName: "",
+    employeeIdNumber: "",
+    departmentId: 0,
+    departmentName: "",
+    employeeLevel: "",
+    employeeExp: 0,
+    projectId: 0,
+    projectName: "",
+    documentContent: "", // Initialize with an empty string
+  };
 
-       
-
-        var EmployeeToPost : Demo.Employee = {
-           
-            employeeId: 0,
-        employeeName: "",
-        employeeIdNumber: "",
-        departmentId: 0,
-        departmentName: "",
-        employeeLevel:"",
-        employeeExp: 0,
-        offDay:"", 
-        projectId: 0,
-        projectName: "",
-             
-        };
-
-        setEmployeeToPost(EmployeeToPost);
-        setPostButtonLabel('Yeni personel ekle');
-        setDisplayPost(true);
-    }
-
+  setEmployeeToPost(EmployeeToPost);
+  setPostButtonLabel('Yeni personel ekle');
+  setDisplayPost(true);
+}
     function postEmployee(){
         const isValidTCKN = checkTCKNValidity(EmployeeToPost?.employeeIdNumber || '');
 
@@ -228,7 +392,7 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
 
     function handleUpdateClick(employee:Demo.Employee){
-        EmployeeService.getEmployeeById(employee.employeeId)
+        EmployeeService.getEmployeebyId(employee.employeeId)
             .then(employeeFromService => {
                 setEmployeeToUpdate({...employeeFromService});
                 setDisplayUpdate(true);
@@ -242,17 +406,37 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
           });
     }
 
-    const updateActionBodyTemplate = (EmployeeRow:Demo.Employee) => {
-        return <Button style={{margin :'1px'}} type="button" label="Güncelle" icon="pi pi-external-link" onClick={() => handleUpdateClick(EmployeeRow)}/>  
-    }
-   
-   const actionBodyTemplateOffDay =(EmployeeRow:Demo.Employee) =>{
-    return <Button style={{margin :'1px', background:'rgba(135 145 156)',border:'rgba(135 145 156)'}} type="button" label="Belge Ekle" icon="pi pi-external-link" onClick={() => handleUpdateClick(EmployeeRow)}/>  
-   }
 
-   function setSelectedDepartmentForPost(e: DropdownChangeEvent): void {
-    throw new Error('Function not implemented.');
+var x: { employeeId: number; employeeName?: string; departmentId?: number; departmentName?: string; employeeIdNumber?: string; employeeLevel?: string; employeeExp?: number; projectId?: number; projectName?: string; };
+    
+
+
+function handleOffday(employee:Demo.Employee){
+  debugger;
+  localStorage.setItem("test",employee.employeeId.toString());
+  x =employee;
+  
+  EmployeeService.getEmployeebyId(employee.employeeId)
+            .then(employeeFromService => {
+                setEmployeeToOffday({...employeeFromService});
+                setDisplayOffday(true);
+            })
+  
+ 
 }
+
+
+
+
+
+            
+
+
+
+
+
+  
+
    
 
 
@@ -273,31 +457,47 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                 <span>Silmek istediğinize emin misiniz?</span>
                 </div>
                 </Dialog>
+              
 
 
-                
-                        
-                <Dialog header="Veri Ekleme Sihirbazı" visible={displayBasicPost} style={{ width: '30vw' , height: '31vw', padding:'0.5rem'}} modal footer={PostDialogFooter} onHide={() => setDisplayPost(false)}>
+
+
+  
+<Dialog header="Belge Ekleme Sihirbazı" visible={displayBasicOffday} style={{ width: '30vw' , height: '27vw', padding:'0.5rem'}}  onHide={() => setDisplayOffday(false)}>
                           
                 
-                <div className="card" >
-                              
-                                 <div className="formgroup-inline"   style={{ paddingLeft:'1.5rem'}}  >
-                                     <div className="field">
-                                          <label htmlFor="name" className="p-sr-only">
-                                              EmployeeName
-                                          </label>
-                                          <h5 style={{display:'-ms-inline-flexbox'}}>Çalışan Adı</h5>
-                                          <InputText id="employeeName" value={EmployeeToPost?.employeeName} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın Adı" />
-                                      </div>
-                                                                    
-                                      <div className="field">
-                                  <label htmlFor="departmentId" className="p-sr-only">
-                                  departmentId
-                                  </label>
-                                  <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
-                                    <Dropdown id="departmentId" value={EmployeeToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
-                                   </div>
+                          <div className="card" >
+                                        
+                                           <div className="formgroup-inline"   style={{ paddingLeft:'1.5rem'}}  >
+                                               <div className="field">
+                                                    <label htmlFor="name" className="p-sr-only">
+                                                        EmployeeName
+                                                    </label>
+                                                    <h5 style={{display:'-ms-inline-flexbox'}}></h5>
+                                                    <FileUpload ref={fileUploadRef} chooseLabel="Dosya Seç" uploadLabel='Yükle' cancelLabel='İptal et' className="p-mb-2" customUpload uploadHandler={(event) => handleFileUpload(event, localStorage.getItem("test"))} accept="application/pdf"/>
+                                                </div>
+                                           </div>
+                                    </div>                             
+</Dialog>
+
+                <Dialog header="Veri Ekleme Sihirbazı" visible={displayBasicPost} style={{ width: '30vw' , height: '31vw', padding:'0.5rem'}} modal footer={PostDialogFooter} onHide={() => setDisplayPost(false)}>
+                <div className="card" > 
+                <div className="formgroup-inline" style={{ paddingLeft:'1.5rem'}}  >
+                 <div className="field">
+                          <label htmlFor="name" className="p-sr-only">
+                             EmployeeName
+                          </label>
+                          <h5 style={{display:'-ms-inline-flexbox'}}>Çalışan Adı</h5>
+                            <InputText id="employeeName" value={EmployeeToPost?.employeeName} onChange={(e) => { postEmployeeValue(e); }} type="text" placeholder="Çalışanın Adı" />
+                  </div>
+                
+                  <div className="field">
+                     <label htmlFor="departmentId" className="p-sr-only">
+                        departmentId
+                     </label>
+                   <h5 style={{display:'-ms-inline-flexbox'}}>Departman Adı</h5>
+                      <Dropdown id="departmentId" value={EmployeeToPost?.departmentId} options={employeeOptions} optionLabel="label" placeholder="Departman seçin" className="w-full md:w-14rem" onChange={(e) => postEmployeeValue(e)}/>
+                  </div>
                               
                               <div className="field">
                                   <label htmlFor="employeeIdNumber" className="p-sr-only">
@@ -341,6 +541,10 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
                                   
                                 </Dialog>
+                
+
+                        
+                             
                                
                                 <div className="grid">
                                     <div className="col-12">
@@ -354,18 +558,12 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                 <div className="flex align-items-center justify-content-center">
                 
                    
-                    <div className="formgroup-inline">
-                        <div className="field">
-                            <label htmlFor="employeeId" className="p-sr-only">
-                            employeeId
-                            </label>
-                            <InputText id="employeeId" type="text" placeholder="employeeId" />
-                        </div>
-                       
-                        
-                    
+                <div className="flex align-items-center justify-content-center">
+                         <i className='pi pi-exclamation-triangle mr-3' style={{fontSize: '2rem'}}/>
+                         <span> Bak silerim ?</span>
+                                    
                     </div>
-                </div>
+                    </div>
                 </Dialog>
                
                 <Dialog header="Veri Güncelleme Sihirbazı" visible={displayBasicUpdate} style={{ width: '17vw' , height: '35vw'}} modal footer={UpdateDialogFooter} onHide={() => setDisplayUpdate(false)}>
@@ -518,11 +716,12 @@ const [displayConfirmation, setDisplayConfirmation] = useState(false);
                         <Column field="departmentName" header="Departman Adı" style={{ minWidth: '12rem' }} />
                         <Column field="employeeIdNumber" header="Çalışan TC no"  style={{ minWidth: '12rem' }} />
                         <Column field="employeeLevel" header="Çalışan Kıdem"  style={{ minWidth: '12rem' }} />
-                        <Column field="employeeExp" header="Tecrübe(Yıl)"  style={{ minWidth: '12rem' }} />
-                        <Column field="offDay" header="İzin Durumu"  style={{ minWidth: '12rem' }} body={actionBodyTemplateOffDay}/>
+                        <Column field="employeeExp" header="Tecrübe(Yıl)"  style={{ minWidth: '12rem' }} />                    
                         <Column field="projectName" header="Proje Kodu"  style={{ minWidth: '12rem' }} />
-                        <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={deleteActionBodyTemplate} />
-                        <Column headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={updateActionBodyTemplate} />
+                        
+
+                        <Column header="Güncelle / Sil"  headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={ActionBodyTemplate} />
+                     
                     </DataTable>
                     </div>
             </div>

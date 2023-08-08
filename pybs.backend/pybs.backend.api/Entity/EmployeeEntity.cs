@@ -25,8 +25,10 @@ namespace pybs.backend.api.Entity
         public int ProjectId { get; set; }
        
         public int DepartmentId { get; set; }
-
-
+        
+        public string FileName { get; set; } = string.Empty;
+        public byte[]? FileContent { get; set; }
+        //public IFormFile formFile { get; set; }
 
         [ForeignKey(nameof(ProjectId))]
         public virtual ProjectEntity? Project { get; set; }
