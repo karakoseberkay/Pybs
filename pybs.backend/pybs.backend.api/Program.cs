@@ -11,13 +11,6 @@ namespace pybs.backend.api
             // Add services to the container.
 
 
-            builder.Services.AddDbContext<DataContext>(
-
-                o => o.UseNpgsql(builder.Configuration.GetConnectionString("Postgres_Db"))
-
-                );
-
-
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -25,16 +18,19 @@ namespace pybs.backend.api
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+
+            builder.Services.AddDbContext<DataContext>(o => 
+            {
+                var connectionString = builder.Configuration.GetConnectionString("Postgres_Db");
+                o.UseNpgsql(connectionString);
+            });
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
             app.UseCors(options =>

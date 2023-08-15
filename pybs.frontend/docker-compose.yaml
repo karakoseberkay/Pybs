@@ -1,0 +1,7 @@
+services:
+  node:
+    image: "my-webapp"
+   
+    ports:
+      - "3000:3000"
+   

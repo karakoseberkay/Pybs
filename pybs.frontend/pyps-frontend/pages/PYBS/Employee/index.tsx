@@ -13,6 +13,33 @@ import { ProjectService } from '../../../demo/service/ProjectService';
 import { FileUpload } from 'primereact/fileupload';
 import { SplitButton } from 'primereact/splitbutton';
 
+import { confirmPopup, ConfirmPopup } from 'primereact/confirmpopup';
+
+
+/*
+
+import { confirmPopup, ConfirmPopup } from 'primereact/confirmpopup';
+
+ <div className="card">
+                        <h5>ConfirmPopup</h5>
+                        <ConfirmPopup />
+                        <Button onClick={confirm} icon="pi pi-check" label="Confirm"></Button>
+                    </div>
+                </div>
+            </div>
+
+             const confirm: ButtonEvent = (event) => {
+        confirmPopup({
+            target: event.currentTarget,
+            message: 'Are you sure you want to proceed?',
+            icon: 'pi pi-exclamation-triangle',
+            accept,
+            reject
+        });
+    };
+
+*/
+
 const StudentsPage = () => {
     const [EmployeeToPost, setEmployeeToPost] = useState<Demo.Employee>();    
     const [DepartmentId, setDepartmentId] = useState<Demo.Department>();
@@ -39,30 +66,29 @@ const [selectedDocument, setSelectedDocument] = useState<Demo.Employee | null>(n
 
 
 
-
 const handleAction = (EmployeeRow: Demo.Employee, command: string) => {
   switch (command) {
-      case 'Güncelle':
-          handleUpdateClick(EmployeeRow);
-          console.log('Güncelleme işlemi yapılıyor');
-          break;
-      case 'Sil':
-          handleDeleteClick(EmployeeRow.employeeId);
-          console.log('Silme işlemi yapılıyor');
-          break;
-      case 'Belge Yükle':
-          handleOffday(EmployeeRow);
-          console.log('Belge yükleme işlemi yapılıyor');
-          break;
-      case 'Belge Görüntüle':
-          viewDocument(EmployeeRow);
-          console.log('Belge görüntüleme işlemi yapılıyor');
-          break;
-      default:
-          console.log('Geçersiz komut');
-          break;
+    case 'Güncelle':
+      handleUpdateClick(EmployeeRow);
+      console.log('Güncelleme işlemi yapılıyor');
+      break;
+    case 'Sil':
+      handleDeleteClick(EmployeeRow.employeeId);
+      console.log('Silme işlemi yapılıyor');
+      break;
+    case 'Belge Yükle':
+      handleOffday(EmployeeRow);
+      console.log('Belge yükleme işlemi yapılıyor');
+      break;
+    case 'Belge Görüntüle':
+      viewDocument(EmployeeRow);
+      console.log('Belge görüntüleme işlemi yapılıyor');
+      break;
+    default:
+      console.log('Geçersiz komut');
+      break;
   }
-  setSelectedCommand('İşlemeler'); //bu komut seçi sabit tutuyor
+  setSelectedCommand(command); // Seçilen komutu ayarla
 };
 
 
@@ -170,43 +196,37 @@ const handleAction = (EmployeeRow: Demo.Employee, command: string) => {
   
    
     const ActionBodyTemplate = (row: Demo.Employee) => {
-      const items = [
-
-       
-      
-          {
-              label: 'Güncelle',
-              icon: 'pi pi-refresh',
-              command: () => {
-                  setSelectedCommand('Güncelle');
-                  handleAction(row, 'Güncelle'); // Call the handleAction function
-              },
-          },
-          {
-              label: 'Sil',
-              icon: 'pi pi-times',
-              command: () => {
-                  setSelectedCommand('Sil');
-                  handleAction(row, 'Sil'); // Call the handleAction function
-              },
-          },
-          {
-              label: 'Belge Yükle',
-              icon: 'pi pi-upload',
-              command: () => {
-                  setSelectedCommand('Belge Yükle');
-                  handleAction(row, 'Belge Yükle'); // Call the handleAction function
-              },
-          },
-          {
-            label: 'Belge Görüntüle ve İndir',
-            icon: 'pi pi-eye',
-            command: () => {
-               
-                viewAndDownloadDocument(row); // Burada belge içeriği (PDF URL) geçirin
-            },
-        },
-      ];
+    
+const items = [
+  {
+    label: 'Güncelle',
+    icon: 'pi pi-refresh',
+    command: () => {
+      handleAction(row, 'Güncelle'); // Call the handleAction function
+    },
+  },
+  {
+    label: 'Sil',
+    icon: 'pi pi-times',
+    command: () => {
+      handleAction(row, 'Sil'); // Call the handleAction function
+    },
+  },
+  {
+    label: 'Belge Yükle',
+    icon: 'pi pi-upload',
+    command: () => {
+      handleAction(row, 'Belge Yükle'); // Call the handleAction function
+    },
+  },
+  {
+    label: 'Belge Görüntüle ve İndir',
+    icon: 'pi pi-eye',
+    command: () => {
+      viewAndDownloadDocument(row); // Burada belge içeriği (PDF URL) geçirin
+    },
+  },
+];
       return (
         <SplitButton
         model={items}
@@ -219,7 +239,7 @@ const handleAction = (EmployeeRow: Demo.Employee, command: string) => {
     const employeeOptions = departments.map((emp) => ({
         label: emp.departmentName,
         value: emp.departmentId
-      }));
+     }));
 
     
       const projectOptions = projects.map((emp) => ({
@@ -480,6 +500,8 @@ function handleOffday(employee:Demo.Employee){
                                     </div>                             
 </Dialog>
 
+
+                
                 <Dialog header="Veri Ekleme Sihirbazı" visible={displayBasicPost} style={{ width: '30vw' , height: '31vw', padding:'0.5rem'}} modal footer={PostDialogFooter} onHide={() => setDisplayPost(false)}>
                 <div className="card" > 
                 <div className="formgroup-inline" style={{ paddingLeft:'1.5rem'}}  >
@@ -712,16 +734,14 @@ function handleOffday(employee:Demo.Employee){
                     >
                        
 
-                        <Column field="employeeName" header="Çalışan İsmi"  style={{ minWidth: '12rem' }} />
-                        <Column field="departmentName" header="Departman Adı" style={{ minWidth: '12rem' }} />
-                        <Column field="employeeIdNumber" header="Çalışan TC no"  style={{ minWidth: '12rem' }} />
-                        <Column field="employeeLevel" header="Çalışan Kıdem"  style={{ minWidth: '12rem' }} />
-                        <Column field="employeeExp" header="Tecrübe(Yıl)"  style={{ minWidth: '12rem' }} />                    
-                        <Column field="projectName" header="Proje Kodu"  style={{ minWidth: '12rem' }} />
-                        
+                       <Column field="employeeName" header="Çalışan İsmi" key="employeeName" style={{ minWidth: '12rem' }} />
+                       <Column field="departmentName" header="Departman Adı" key="departmentName" style={{ minWidth: '12rem' }} />
+                       <Column field="employeeIdNumber" header="Çalışan TC no" key="employeeIdNumber" style={{ minWidth: '12rem' }} />
+                       <Column field="employeeLevel" header="Çalışan Kıdem" key="employeeLevel" style={{ minWidth: '12rem' }} />
+                       <Column field="employeeExp" header="Tecrübe(Yıl)" key="employeeExp" style={{ minWidth: '12rem' }} />                    
+                       <Column field="projectName" header="Proje Kodu" key="projectName" style={{ minWidth: '12rem' }} />
+                       <Column header="İşlemler" headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={ActionBodyTemplate} />
 
-                        <Column header="Güncelle / Sil"  headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={ActionBodyTemplate} />
-                     
                     </DataTable>
                     </div>
             </div>

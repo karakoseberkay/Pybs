@@ -1,0 +1,22 @@
+
+
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./pybs.frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+  #  links:
+   #   - postgres
+
+  backend:
+    build:
+      context: ./pybs.backend
+    ports:
+      - "5284:80"
+
+  #postgres:
+   # container_name: postgres
