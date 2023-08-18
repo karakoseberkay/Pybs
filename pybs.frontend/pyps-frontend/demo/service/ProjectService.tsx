@@ -3,13 +3,13 @@ import { Demo } from '../../types/types';
 export const ProjectService = {
 
     getProjects() {
-        return fetch('http://localhost:5284/api/project')
+        return fetch('http://192.168.1.147:5284/api/project')
             .then((res) => res.json())
             .then((d) => d as Demo.Project[]);
     },
 
     deleteProject(id:any){
-        return fetch('http://localhost:5284/api/project/'+id, {
+        return fetch('http://192.168.1.147:5284/api/project/'+id, {
             method: 'DELETE'
           })
              .catch((err) => {
@@ -18,7 +18,7 @@ export const ProjectService = {
     },
     updateProject(project:Demo.Project){
 
-        return fetch('http://localhost:5284/api/project/'+project.projectId, {
+        return fetch('http://192.168.1.147:5284/api/project/'+project.projectId, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(project)
@@ -32,7 +32,7 @@ export const ProjectService = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(project)
         };
-       return fetch('http://localhost:5284/api/project', requestOptions)
+       return fetch('http://192.168.1.147:5284/api/project', requestOptions)
 
     },
    

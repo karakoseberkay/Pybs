@@ -25,14 +25,12 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Frontend dosyalarını kopyala
-COPY ["pyps-frontend/package.json", "pyps-frontend/package-lock.json", "./"]
+# Frontend kodunu kopyala ve build et
+COPY ["pyps-frontend/", "./"]
 
 # Gerekli bağımlılıkları kur
 RUN npm install
 
-# Frontend kodunu kopyala ve build et
-COPY ["pyps-frontend/", "./"]
 RUN npm run build
 
 USER nextjs

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using pybs.backend.api.Entity;
+
 namespace pybs.backend.api
 {
     public class Program
@@ -9,19 +10,15 @@ namespace pybs.backend.api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-
-            builder.Services.AddDbContext<DataContext>(o => 
+            builder.Services.AddDbContext<DataContext>(o =>
             {
-                var connectionString = builder.Configuration.GetConnectionString("Postgres_Db");
+                var connectionString = Environment.GetEnvironmentVariable("Postgres_Db");
                 o.UseNpgsql(connectionString);
             });
 
@@ -30,18 +27,16 @@ namespace pybs.backend.api
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            //app.UseHttpsRedirection();
-
-            app.UseAuthorization();
+            // CORS politikalarýný burada tanýmlayýn
             app.UseCors(options =>
             {
                 options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             });
+
+            app.UseAuthorization();
             app.MapControllers();
 
             app.Run();
         }
     }
 }
-
-

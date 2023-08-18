@@ -11,6 +11,10 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     const menubuttonRef = useRef(null);
     const topbarmenuRef = useRef(null);
     const topbarmenubuttonRef = useRef(null);
+    const handleButtonClick = () => {
+          window.location.href = '/LoginPanel'; // Profile sayfasının yolunu belirtin
+        };
+    
 
     useImperativeHandle(ref, () => ({
         menubutton: menubuttonRef.current,
@@ -38,9 +42,10 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                     <i className="pi pi-calendar"></i>
                     <span>Calendar</span>
                 </button>
-                <button type="button" className="p-link layout-topbar-button">
+                <button type="button" className="p-link layout-topbar-button" onClick={handleButtonClick}>
                     <i className="pi pi-user"></i>
                     <span>Profile</span>
+                    
                 </button>
                 <Link href="/documentation">
                     <button type="button" className="p-link layout-topbar-button">

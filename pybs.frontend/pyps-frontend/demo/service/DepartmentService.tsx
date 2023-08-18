@@ -6,7 +6,7 @@ export const DepartmentService = {
 
     
     getDepartments() {
-        return fetch('http://localhost:5284/api/department')
+        return fetch('http://192.168.1.147:5284/api/department')
             .then((res) => res.json())
             .then((d) => d as Demo.Department[]);
     },
@@ -18,12 +18,12 @@ export const DepartmentService = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(department)
         };
-       return fetch('http://localhost:5284/api/department', requestOptions)
+       return fetch('http://192.168.1.147:5284/api/department', requestOptions)
 
     },
     updateDepartment(deparment:Demo.Department){
 
-        return fetch('http://localhost:5284/api/department/'+ deparment.departmentId, {
+        return fetch('http://192.168.1.147:5284/api/department/'+ deparment.departmentId, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(deparment)
@@ -31,7 +31,7 @@ export const DepartmentService = {
 
     },
     deleteDepartment(id:any){
-        return fetch('http://localhost:5284/api/department/'+id, {
+        return fetch('http://192.168.1.147:5284/api/department/'+id, {
             method: 'DELETE'
           })
              .catch((err) => {
