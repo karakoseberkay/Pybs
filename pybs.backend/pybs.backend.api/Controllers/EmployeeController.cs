@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pybs.backend.api.Entity;
 using pybs.backend.api.DTO.EmployeeDto;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +23,8 @@ namespace pybs.backend.api.Controllers
 
         // GET: api/<DepartmentController>
         [HttpGet]
-public IEnumerable<EmployeeListDto> GetEmployees()
+        [Authorize(Policy = "RequireDirector")]
+        public IEnumerable<EmployeeListDto> GetEmployees()
 {
             //var employeesFromDatabase = _dataContext.EmployeeEntities.ToList();
 
@@ -44,8 +46,12 @@ public IEnumerable<EmployeeListDto> GetEmployees()
     return employeeDtos;
 }
 
+
+
+
         // GET api/<DepartmentController>/5
         [HttpGet("{id}")]
+        [Authorize(Policy = "RequireEmployeeRole")]
         public EmployeeDetailDto? Get(int id)
         {
             return _dataContext.EmployeeEntities.Select(t=> new EmployeeDetailDto

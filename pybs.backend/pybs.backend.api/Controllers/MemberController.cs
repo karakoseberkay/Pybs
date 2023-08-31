@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pybs.backend.api.Entity;
-using pybs.backend.api.DTO.DepartmentDto;
+
 using Microsoft.AspNetCore.Authorization;
+using pybs.backend.api.DTO.MemberDto;
+using pybs.backend.api.DTO.MemberDtoDto;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,45 +12,45 @@ namespace pybs.backend.api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class DepartmentController : ControllerBase
+    public class MemberController : ControllerBase
     {
 
         private readonly DataContext _dataContext;
 
-        public DepartmentController(DataContext dataContext)
+        public MemberController(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
-    
+
 
 
         // GET: api/<DepartmentController>
         [HttpGet]
-        public IEnumerable<DepartmentEntity> GetDepartments()
+        public IEnumerable<MemberEntity> GetMembers()
         {
-            var DataBase = _dataContext.DepartmentEntities.ToList();
+            var DataBase = _dataContext.MemberEntities.ToList();
             return DataBase;
         }
 
         // GET api/<DepartmentController>/5
         [HttpGet("{id}")]
-        public DepartmentEntity Get(int id)
+        public MemberEntity Get(int id)
         {
-            return _dataContext.DepartmentEntities.FirstOrDefault(s => s.DepartmentId == id);
+            return _dataContext.MemberEntities.FirstOrDefault(s => s.MemberId == id);
         }
 
         // POST api/<DepartmentController>
         [HttpPost]
-        public string Post([FromBody] AddDepartmentDto department)
+        public string Post([FromBody] AddMemberDto member)
         {
             if (!ModelState.IsValid)
                 return "Başarısız";
-            
-            var DepartmentToSave = new DepartmentEntity();
-            DepartmentToSave.DepartmentName = department.DepartmentName;
 
-            _dataContext.DepartmentEntities.Add(DepartmentToSave);
+            var MemberToSave = new MemberEntity();
+            MemberToSave.MemberName = member.MemberName;
+
+            _dataContext.MemberEntities.Add(MemberToSave);
             _dataContext.SaveChanges();
 
             return "Ekleme Başarılı";
@@ -56,15 +58,15 @@ namespace pybs.backend.api.Controllers
 
         // PUT api/<DepartmentController>/5
         [HttpPut("{id}")]
-        public string PutAsync(int id, [FromBody] UpdateDepartmentDto department)
+        public string PutAsync(int id, [FromBody] UpdateMemberDto member)
         {
-            var DepartmentFromDatabase = _dataContext.DepartmentEntities.FirstOrDefault(s => s.DepartmentId == id);
+            var MemberFromDatabase = _dataContext.MemberEntities.FirstOrDefault(s => s.MemberId == id);
 
-            if (DepartmentFromDatabase == null) 
+            if (MemberFromDatabase == null)
                 return "Departman Bulunamadı";
 
-            DepartmentFromDatabase.DepartmentName = department.DepartmentName;
-            _dataContext.DepartmentEntities.Update(DepartmentFromDatabase);
+            MemberFromDatabase.MemberName = member.MemberName;
+            _dataContext.MemberEntities.Update(MemberFromDatabase);
             _dataContext.SaveChanges();
 
             return "Güncelleme Başarılı";
@@ -75,14 +77,14 @@ namespace pybs.backend.api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var DepartmentValue = await _dataContext.DepartmentEntities.FindAsync(id);
-            
-            if (DepartmentValue == null)
+            var MemberValue = await _dataContext.MemberEntities.FindAsync(id);
+
+            if (MemberValue == null)
             {
                 return NotFound();
             }
 
-            _dataContext.DepartmentEntities.Remove(DepartmentValue);
+            _dataContext.MemberEntities.Remove(MemberValue);
             await _dataContext.SaveChangesAsync();
 
             return NoContent();
